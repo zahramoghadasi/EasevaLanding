@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Easeva — AI Secretary for Tradespeople</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent: #D97B4F;
+    --accent-dark: #B85F32;
+    --accent-light: #FAF0E8;
+    --bg: #FAFAF8;
+    --bg-card: #FFFFFF;
+    --text: #1A1A18;
+    --text-muted: #6B6B68;
+    --text-light: #9B9B98;
+    --border: #E5E4DF;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* NAV */
+  nav {
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111110;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .logo {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: #fff;
+  }
+
+  .logo span { color: var(--accent); }
+
+  .spots-badge {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    background: rgba(217,123,79,0.12);
+    border: 1px solid rgba(217,123,79,0.3);
+    padding: 5px 12px;
+    border-radius: 4px;
+  }
+
+  /* HERO */
+  .hero {
+    background: #111110;
+    padding: 56px 24px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      0deg, transparent, transparent 39px,
+      rgba(255,255,255,0.025) 39px, rgba(255,255,255,0.025) 40px
+    );
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(217,123,79,0.3);
+    background: rgba(217,123,79,0.08);
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 28px;
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 7vw, 60px);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    color: #FFFFFF;
+    margin-bottom: 6px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero-rule {
+    width: 40px;
+    height: 3px;
+    background: var(--accent);
+    margin: 24px 0;
+    border-radius: 2px;
+  }
+
+  .hero-body {
+    font-size: 16px;
+    color: #A0A09C;
+    line-height: 1.75;
+    max-width: 500px;
+    margin-bottom: 14px;
+  }
+
+  .hero-body strong { color: #DDDDD8; font-weight: 500; }
+
+  .hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 28px 0 40px;
+  }
+
+  .hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #B0B0AC;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 7px 13px;
+    border-radius: 4px;
+  }
+
+  .pill-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* CTA BLOCK */
+  .cta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 15px 28px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s, transform 0.1s;
+    width: 100%;
+    max-width: 320px;
+    letter-spacing: -0.2px;
+  }
+
+  .btn-primary:hover { background: var(--accent-dark); }
+  .btn-primary:active { transform: scale(0.99); }
+
+  .cta-sub {
+    font-size: 12px;
+    color: #555552;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    max-width: 680px;
+    margin: 0 auto 56px;
+    padding: 0 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* SECTIONS */
+  .section {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px 56px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 28px;
+  }
+
+  /* TEAM */
+  .team-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 480px) {
+    .team-grid { grid-template-columns: 1fr; }
+    .hero { padding: 40px 20px 48px; }
+    .section { padding: 0 20px 40px; }
+    nav { padding: 14px 20px; }
+    .page2-inner { padding: 32px 20px 60px; }
+    .form-step { padding: 20px; }
+    .hero-pills { gap: 6px; }
+  }
+
+  .team-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+  }
+
+  .team-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    border: 1px solid #F0C4A8;
+    color: var(--accent-dark);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  .team-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .team-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+  .team-card a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--accent-dark);
+    text-decoration: none;
+    margin-top: 10px;
+    font-weight: 500;
+  }
+
+  .team-card a:hover { text-decoration: underline; }
+
+  .hackathon-note {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+  }
+
+  .hackathon-note p { font-size: 13px; color: var(--text-muted); }
+  .hackathon-note strong { color: var(--text); }
+
+  /* BOTTOM CTA */
+  .bottom-cta {
+    background: #111110;
+    padding: 56px 24px;
+    text-align: center;
+  }
+
+  .bottom-cta h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .bottom-cta p { font-size: 15px; color: #555552; margin-bottom: 28px; }
+  .bottom-cta .btn-primary { margin: 0 auto; }
+
+  /* ===== PAGE 2 ===== */
+  .page2-nav {
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .page2-nav .logo { color: var(--text); }
+
+  .page2-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  .page2-header { margin-bottom: 40px; }
+  .page2-header h2 { font-size: 24px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 6px; }
+  .page2-header p { font-size: 15px; color: var(--text-muted); }
+
+  .form-step {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: opacity 0.3s;
+  }
+
+  .form-step.locked { opacity: 0.4; pointer-events: none; }
+  .form-step h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .form-step .step-hint { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+
+  .qualify-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .qualify-btn {
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    color: var(--text);
+    font-family: inherit;
+  }
+
+  .qualify-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+  .qualify-btn.selected { border-color: var(--accent); background: var(--accent-light); color: var(--accent-dark); }
+
+  .no-message {
+    display: none;
+    background: #F8F6F4;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-top: 16px;
+  }
+
+  .no-message p { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; }
+
+  .email-row { display: flex; gap: 8px; }
+
+  .email-row input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--bg-card);
+    outline: none;
+  }
+
+  .email-row input:focus { border-color: var(--accent); }
+
+  .btn-sm {
+    padding: 10px 16px;
+    background: var(--text);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  .voucher-grid { display: flex; flex-direction: column; gap: 8px; }
+
+  .voucher-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    background: var(--bg-card);
+  }
+
+  .voucher-card:hover { border-color: var(--accent); background: var(--accent-light); }
+  .voucher-card.selected { border-color: var(--accent); background: var(--accent-light); }
+  .voucher-card.selected .voucher-check { opacity: 1; }
+
+  .voucher-icon { font-size: 22px; width: 36px; text-align: center; }
+  .voucher-label { flex: 1; }
+  .voucher-label strong { font-size: 14px; font-weight: 500; display: block; }
+  .voucher-label small { font-size: 12px; color: var(--text-muted); }
+
+  .voucher-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
+  }
+
+  .voucher-check::after {
+    content: '';
+    width: 10px;
+    height: 6px;
+    border-left: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: rotate(-45deg) translateY(-1px);
+  }
+
+  .btn-next {
+    display: none;
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+  }
+
+  .btn-next:hover { background: var(--accent-dark); }
+  .btn-next.visible { display: block; }
+
+  .calendly-section { display: none; margin-top: 20px; }
+  .calendly-section.visible { display: block; }
+
+  .calendly-embed-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--text-muted);
+    text-decoration: none;
+    margin-bottom: 32px;
+    cursor: pointer;
+  }
+
+  .back-link:hover { color: var(--text); }
+
+  .step-indicator { display: flex; align-items: center; gap: 8px; margin-bottom: 32px; }
+  .step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: background 0.2s; }
+  .step-dot.done { background: var(--accent); }
+  .step-label { font-size: 13px; color: var(--text-light); margin-left: 4px; }
+
+  .notify-confirm { display: none; font-size: 14px; color: var(--accent-dark); font-weight: 500; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ===== PAGE 1 ===== -->
+<div class="page active" id="page1">
+
+  <nav>
+    <div class="logo">ease<span>va</span></div>
+    <div class="spots-badge">20 founding spots</div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">For London plumbers &amp; electricians</div>
+      <h1>A secretary that makes<br><em>your life easy.</em></h1>
+      <div class="hero-rule"></div>
+      <p class="hero-body">Are you a <strong>plumber or electrician</strong> running your own business in London?</p>
+      <p class="hero-body">We're building a tool that runs your admin — so you can focus on the work.</p>
+
+      <div class="hero-pills">
+        <span class="hero-pill"><span class="pill-dot"></span>Answers your calls</span>
+        <span class="hero-pill"><span class="pill-dot"></span>Books appointments</span>
+        <span class="hero-pill"><span class="pill-dot"></span>Chases payments</span>
+        <span class="hero-pill"><span class="pill-dot"></span>Advertises for you</span>
+      </div>
+
+      <p class="hero-body">We need <strong>20 London tradespeople</strong> to help us shape it. Join us and use it for free while we build it together. Let's talk it over a coffee, on us.</p>
+
+      <div class="cta-block" style="margin-top: 36px;">
+        <button class="btn-primary" onclick="goToPage2()">Claim your free coffee →</button>
+        <span class="cta-sub">No commitment · 30 minutes · we come to you</span>
+      </div>
+    </div>
+  </section>
+
+  <div style="height: 56px;"></div>
+
+  <div class="divider"></div>
+
+  <section class="section">
+    <p class="section-label">The team</p>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">ZM</div>
+        <h4>Zara Mogadasi</h4>
+        <p>Scaled a ride-hailing app from day one to millions of rides. LBS MBA.</p>
+        <a href="https://www.linkedin.com/in/zaramogadasi/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">MH</div>
+        <h4>Midhat Fatima</h4>
+        <p>Built an AI chatbot used by millions of people every day. LBS MBA.</p>
+        <a href="https://www.linkedin.com/in/itsmidhat/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+    </div>
+    <div class="hackathon-note">
+      <span>🏆</span>
+      <p><strong>HackLBS 2026 grand prize winner.</strong> Backed by London Business School.</p>
+    </div>
+  </section>
+
+  <div class="bottom-cta">
+    <h2>Ready to get your life back?</h2>
+    <p>20 spots. Free to join. Your coffee's on us.</p>
+    <button class="btn-primary" onclick="goToPage2()">Claim your free coffee →</button>
+  </div>
+
+</div>
+
+
+<!-- ===== PAGE 2 ===== -->
+<div class="page" id="page2">
+
+  <nav class="page2-nav">
+    <div class="logo" style="color: var(--text);">ease<span>va</span></div>
+    <div class="spots-badge" style="color: var(--accent-dark); background: var(--accent-light); border-color: #F0C4A8;">20 founding spots</div>
+  </nav>
+
+  <div class="page2-inner">
+
+    <a class="back-link" onclick="goToPage1()">← Back</a>
+
+    <div class="step-indicator">
+      <div class="step-dot" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+      <div class="step-dot" id="dot3"></div>
+      <span class="step-label" id="step-label-text">Step 1 of 3</span>
+    </div>
+
+    <div class="page2-header">
+      <h2>Two quick things first</h2>
+      <p>Takes under a minute — then you pick a time.</p>
+    </div>
+
+    <div class="form-step" id="step1-card">
+      <h3>Are you a plumber or electrician based in London?</h3>
+      <p class="step-hint">Easeva is currently only for London-based tradespeople.</p>
+      <div class="qualify-btns">
+        <button class="qualify-btn" id="btn-yes" onclick="handleQualify(true)">✓ Yes, that's me</button>
+        <button class="qualify-btn" id="btn-no" onclick="handleQualify(false)">No, not quite</button>
+      </div>
+      <div class="no-message" id="no-message">
+        <p>We're not quite ready for you yet — but we're expanding soon. Drop your email and we'll let you know first.</p>
+        <div class="email-row">
+          <input type="email" id="notify-email" placeholder="your@email.com">
+          <button class="btn-sm" onclick="submitNotify()">Notify me</button>
+        </div>
+        <p class="notify-confirm" id="notify-confirm">✓ You're on the list. We'll be in touch!</p>
+      </div>
+    </div>
+
+    <div class="form-step locked" id="step2-card">
+      <h3>How would you like your £10 thank-you?</h3>
+      <p class="step-hint">We'll send this right after our call.</p>
+      <div class="voucher-grid">
+        <div class="voucher-card" onclick="selectVoucher(this, 'bank')">
+          <div class="voucher-icon">🏦</div>
+          <div class="voucher-label"><strong>Bank transfer</strong></div>
+          <div class="voucher-check"></div>
+        </div>
+        <div class="voucher-card" onclick="selectVoucher(this, 'costa')">
+          <div class="voucher-icon">☕</div>
+          <div class="voucher-label"><strong>Costa Coffee</strong></div>
+          <div class="voucher-check"></div>
+        </div>
+        <div class="voucher-card" onclick="selectVoucher(this, 'nero')">
+          <div class="voucher-icon">☕</div>
+          <div class="voucher-label"><strong>Caffè Nero</strong></div>
+          <div class="voucher-check"></div>
+        </div>
+        <div class="voucher-card" onclick="selectVoucher(this, 'amazon')">
+          <div class="voucher-icon">🛒</div>
+          <div class="voucher-label"><strong>Amazon voucher</strong></div>
+          <div class="voucher-check"></div>
+        </div>
+        <div class="voucher-card" onclick="selectVoucher(this, 'cash')">
+          <div class="voucher-icon">💷</div>
+          <div class="voucher-label">
+            <strong>Cash</strong>
+            <small>Available in Hampstead, St John's Wood, Kilburn, or Marylebone — please share your prefered location in description of the booking form</small>
+          </div>
+          <div class="voucher-check"></div>
+        </div>
+      </div>
+      <button class="btn-next" id="btn-next-voucher" onclick="showCalendly()">Pick a time →</button>
+    </div>
+
+    <div class="calendly-section" id="step3-section">
+      <div class="form-step">
+        <h3>Last step — pick a time that works for you</h3>
+        <p class="step-hint">Your reward gets sent straight after the call.</p>
+        <div class="calendly-embed-wrap">
+          <div class="calendly-inline-widget" data-url="https://calendly.com/zahra-moghadasi/30min" style="min-width:280px;height:700px;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function goToPage2() {
+    document.getElementById('page1').classList.remove('active');
+    document.getElementById('page2').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function goToPage1() {
+    document.getElementById('page2').classList.remove('active');
+    document.getElementById('page1').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function updateStepIndicator(step) {
+    ['dot1','dot2','dot3'].forEach((id, i) => {
+      document.getElementById(id).classList.toggle('done', i < step);
+    });
+    document.getElementById('step-label-text').textContent = 'Step ' + step + ' of 3';
+  }
+
+  function handleQualify(isYes) {
+    document.getElementById('btn-yes').classList.toggle('selected', isYes);
+    document.getElementById('btn-no').classList.toggle('selected', !isYes);
+    if (isYes) {
+      document.getElementById('no-message').style.display = 'none';
+      document.getElementById('step2-card').classList.remove('locked');
+      updateStepIndicator(2);
+      setTimeout(() => {
+        document.getElementById('step2-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 150);
+    } else {
+      document.getElementById('no-message').style.display = 'block';
+      document.getElementById('step2-card').classList.add('locked');
+    }
+  }
+
+  function selectVoucher(el) {
+    document.querySelectorAll('.voucher-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('btn-next-voucher').classList.add('visible');
+    updateStepIndicator(3);
+  }
+
+  function showCalendly() {
+    const section = document.getElementById('step3-section');
+    section.classList.add('visible');
+    document.getElementById('btn-next-voucher').style.display = 'none';
+    if (!document.querySelector('script[src*="calendly"]')) {
+      const s = document.createElement('script');
+      s.src = 'https://assets.calendly.com/assets/external/widget.js';
+      s.async = true;
+      document.body.appendChild(s);
+    }
+    setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+  }
+
+  function submitNotify() {
+    const email = document.getElementById('notify-email').value;
+    if (email && email.includes('@')) {
+      document.getElementById('notify-confirm').style.display = 'block';
+      document.getElementById('notify-email').disabled = true;
+      document.querySelector('#no-message .btn-sm').disabled = true;
+    } else {
+      document.getElementById('notify-email').style.borderColor = '#E24B4A';
+    }
+  }
+
+  updateStepIndicator(1);
+</script>
+</body>
+</html>
