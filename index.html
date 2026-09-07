@@ -1,898 +1,991 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>easeva — the office manager every tradesperson needs</title>
-<meta name="description" content="Easeva answers your calls when you're working, handles the forms and certificates, and keeps clients coming back">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --white: #FFFFFF;
-    --navy-900: #0B1B33;
-    --navy-800: #0F2547;
-    --navy-700: #16305C;
-    --navy-500: #2C4A7C;
-    --navy-100: #EEF2F8;
-    --navy-border: #DCE4F0;
-    --accent: #0B1B33;
-    --accent-ink: #060F1E;
-    --font-display: 'Archivo', sans-serif;
-    --font-body: 'Inter', sans-serif;
-    --max-width: 1180px;
-  }
-
-  * { box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-  }
-
-  body {
-    margin: 0;
-    font-family: var(--font-body);
-    color: var(--navy-900);
-    background: var(--white);
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  h1, h2, h3 {
-    font-family: var(--font-display);
-    color: var(--navy-900);
-    line-height: 1.15;
-    margin: 0;
-  }
-
-  a { color: inherit; }
-
-  .wrap {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 32px;
-  }
-
-  .logo {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 22px;
-    letter-spacing: -0.02em;
-    text-decoration: none;
-  }
-
-  .logo .logo-ease { color: var(--navy-900); }
-  .logo .logo-va { color: var(--navy-500); }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 15px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-  }
-
-  .btn-accent {
-    background: var(--accent);
-    color: var(--white);
-    padding: 13px 24px;
-  }
-
-  .btn-accent:hover {
-    background: var(--accent-ink);
-    transform: translateY(-1px);
-  }
-
-  .btn-accent:focus-visible,
-  a:focus-visible,
-  summary:focus-visible,
-  input:focus-visible,
-  button:focus-visible {
-    outline: 3px solid var(--navy-500);
-    outline-offset: 2px;
-  }
-
-  /* ================= HOME VIEW ================= */
-
-  /* ---------- Nav ---------- */
-
-  .nav {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--navy-border);
-  }
-
-  .nav .wrap {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 76px;
-  }
-
-  .nav .btn-accent {
-    padding: 10px 20px;
-    font-size: 14px;
-  }
-
-  /* ---------- Hero ---------- */
-
-  .hero {
-    padding: 88px 0 96px;
-  }
-
-  .hero .wrap {
-    display: grid;
-    grid-template-columns: 1.3fr 0.7fr;
-    gap: 56px;
-    align-items: center;
-  }
-
-  .hero h1 {
-    font-size: clamp(34px, 4.4vw, 52px);
-    letter-spacing: -0.02em;
-    max-width: 12ch;
-  }
-
-  .hero-sub {
-    margin-top: 24px;
-    font-size: 18px;
-    color: var(--navy-700);
-    max-width: 46ch;
-  }
-
-  .hero-sub p { margin: 0 0 6px; }
-
-  .hero-bullets {
-    list-style: none;
-    padding: 0;
-    margin: 28px 0 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .hero-bullets li {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    font-size: 16px;
-    font-weight: 500;
-  }
-
-  .hero-bullets .emoji {
-    font-size: 18px;
-    line-height: 1.4;
-  }
-
-  .hero-cta {
-    margin-top: 36px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .hero-cta .btn-accent {
-    padding: 16px 30px;
-    font-size: 16px;
-  }
-
-  .hero-cta-note {
-    font-size: 14px;
-    color: var(--navy-500);
-    font-weight: 500;
-  }
-
-  /* Hero image placeholder — vertical iOS app frame */
-  .hero-visual {
-    position: relative;
-    display: flex;
-    justify-content: center;
-  }
-
-  .hero-frame {
-    background: var(--navy-900);
-    border-radius: 40px;
-    padding: 14px;
-    width: min(100%, 290px);
-    box-shadow: 0 30px 60px -20px rgba(11,27,51,0.35);
-  }
-
-  .hero-frame-bar {
-    display: flex;
-    justify-content: center;
-    padding: 4px 0 10px;
-  }
-
-  .hero-frame-notch {
-    width: 90px;
-    height: 20px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.15);
-  }
-
-  .hero-frame-inner {
-    background: var(--navy-100);
-    border: 1.5px dashed var(--navy-500);
-    border-radius: 26px;
-    aspect-ratio: 9 / 18.5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 24px;
-  }
-
-  .hero-frame-inner p {
-    color: var(--navy-700);
-    font-weight: 600;
-    font-size: 14px;
-    margin: 0;
-  }
-
-  .hero-frame-inner span {
-    display: block;
-    font-weight: 400;
-    color: var(--navy-500);
-    font-size: 13px;
-    margin-top: 6px;
-  }
-
-  /* ---------- How it works ---------- */
-
-  .how {
-    padding: 96px 0;
-    background: var(--navy-100);
-  }
-
-  .section-head {
-    max-width: 40ch;
-    margin: 0 0 56px;
-  }
-
-  .section-head h2 {
-    font-size: clamp(26px, 3vw, 34px);
-    letter-spacing: -0.01em;
-  }
-
-  .steps {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 0 28px;
-    align-items: start;
-  }
-
-  .step {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .step-index {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: var(--navy-900);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    font-size: 19px;
-  }
-
-  .step h3 {
-    font-size: 21px;
-  }
-
-  .step p {
-    margin: 0;
-    color: var(--navy-700);
-    font-size: 16px;
-    max-width: 34ch;
-  }
-
-  .step-connector {
-    align-self: center;
-    height: 2px;
-    width: 100%;
-    min-width: 40px;
-    margin-top: 22px;
-    background-image: linear-gradient(to right, var(--navy-500) 50%, transparent 50%);
-    background-size: 10px 2px;
-    background-repeat: repeat-x;
-  }
-
-  .trust-strip {
-    margin-top: 56px;
-    background: var(--navy-900);
-    border-radius: 14px;
-    padding: 26px 32px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .trust-strip .check {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--white);
-    color: var(--navy-900);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    font-weight: 700;
-  }
-
-  .trust-strip p {
-    margin: 0;
-    color: var(--white);
-    font-size: 17px;
-    font-weight: 500;
-  }
-
-  /* ---------- Waitlist band (on home page) ---------- */
-
-  .waitlist-band {
-    background: var(--navy-900);
-    padding: 96px 0;
-    text-align: center;
-  }
-
-  .waitlist-band h2 {
-    color: var(--white);
-    font-size: clamp(28px, 3.4vw, 38px);
-  }
-
-  .waitlist-band-sub {
-    color: rgba(255,255,255,0.7);
-    font-size: 17px;
-    margin: 14px 0 36px;
-  }
-
-  .waitlist-band .btn-accent {
-    background: var(--white);
-    color: var(--navy-900);
-  }
-
-  .waitlist-band .btn-accent:hover {
-    background: var(--navy-100);
-  }
-
-  /* ---------- FAQ ---------- */
-
-  .faq {
-    padding: 96px 0 110px;
-  }
-
-  .faq-list {
-    max-width: 760px;
-  }
-
-  .faq-item {
-    border-bottom: 1px solid var(--navy-border);
-  }
-
-  .faq-item summary {
-    list-style: none;
-    cursor: pointer;
-    padding: 22px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    font-weight: 600;
-    font-size: 17px;
-  }
-
-  .faq-item summary::-webkit-details-marker { display: none; }
-
-  .faq-item .plus {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 1.5px solid var(--navy-500);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    color: var(--navy-700);
-    transition: transform 0.2s ease, background 0.2s ease;
-  }
-
-  .faq-item[open] .plus {
-    transform: rotate(45deg);
-    background: var(--navy-900);
-    color: var(--white);
-    border-color: var(--navy-900);
-  }
-
-  .faq-item p {
-    margin: 0 0 24px;
-    color: var(--navy-700);
-    font-size: 15.5px;
-    max-width: 62ch;
-  }
-
-  @media (max-width: 880px) {
-    .hero .wrap { grid-template-columns: 1fr; gap: 48px; }
-    .hero { padding: 56px 0 64px; }
-    .hero-visual { order: -1; }
-    .steps { grid-template-columns: 1fr; gap: 32px; }
-    .step-connector { display: none; }
-    .how, .waitlist-band, .faq { padding: 64px 0; }
-    .trust-strip { flex-direction: column; align-items: flex-start; }
-  }
-
-  @media (max-width: 520px) {
-    .wrap { padding: 0 20px; }
-    .nav .logo { font-size: 19px; }
-  }
-
-  /* ================= WAITLIST VIEW ================= */
-
-  #waitlist-view {
-    display: none;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    padding: 32px 20px;
-  }
-
-  .wl-card-wrap { position: relative; max-width: 460px; width: 100%; }
-
-  .wl-back-link {
-    position: absolute;
-    top: -44px;
-    left: 0;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--navy-700);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .wl-back-link:hover { color: var(--navy-900); }
-
-  .wl-card {
-    background: var(--white);
-    border: 1.5px solid var(--navy-border);
-    border-radius: 20px;
-    max-width: 460px;
-    width: 100%;
-    padding: 48px 40px 40px;
-    box-shadow: 0 30px 60px -25px rgba(11,27,51,0.25);
-    text-align: center;
-    position: relative;
-  }
-
-  .wl-card .logo {
-    font-size: 20px;
-    display: inline-block;
-    margin-bottom: 22px;
-  }
-
-  .wl-badge {
-    display: inline-block;
-    background: var(--navy-100);
-    color: var(--navy-700);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 999px;
-    margin-bottom: 18px;
-  }
-
-  .wl-card h1 {
-    font-size: 28px;
-  }
-
-  .wl-sub {
-    color: var(--navy-700);
-    font-size: 15.5px;
-    max-width: 34ch;
-    margin: 8px auto 30px;
-  }
-
-  #waitlistForm { display: flex; flex-direction: column; gap: 12px; }
-
-  #waitlistForm input[type="text"],
-  #waitlistForm input[type="email"] {
-    width: 100%;
-    padding: 15px 16px;
-    border-radius: 10px;
-    border: 1.5px solid var(--navy-border);
-    font-family: var(--font-body);
-    font-size: 15px;
-    color: var(--navy-900);
-    background: var(--navy-100);
-  }
-
-  #waitlistForm input::placeholder { color: var(--navy-500); }
-
-  .phone-field {
-    display: flex;
-    gap: 8px;
-  }
-
-  .country-code {
-    flex: 0 0 96px;
-    padding: 15px 8px;
-    border-radius: 10px;
-    border: 1.5px solid var(--navy-border);
-    font-family: var(--font-body);
-    font-size: 14.5px;
-    color: var(--navy-900);
-    background: var(--navy-100);
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: linear-gradient(45deg, transparent 50%, var(--navy-500) 50%), linear-gradient(135deg, var(--navy-500) 50%, transparent 50%);
-    background-position: calc(100% - 16px) calc(50% - 2px), calc(100% - 11px) calc(50% - 2px);
-    background-size: 5px 5px, 5px 5px;
-    background-repeat: no-repeat;
-    cursor: pointer;
-  }
-
-  .phone-field input[type="tel"] {
-    flex: 1;
-    min-width: 0;
-    padding: 15px 16px;
-    border-radius: 10px;
-    border: 1.5px solid var(--navy-border);
-    font-family: var(--font-body);
-    font-size: 15px;
-    color: var(--navy-900);
-    background: var(--navy-100);
-  }
-
-  .phone-field input::placeholder { color: var(--navy-500); }
-
-  .device-group {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 2px;
-  }
-
-  .device-option {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 14px 10px;
-    border-radius: 10px;
-    border: 1.5px solid var(--navy-border);
-    background: var(--navy-100);
-    font-size: 14.5px;
-    font-weight: 600;
-    color: var(--navy-700);
-    cursor: pointer;
-    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
-  }
-
-  .device-option input[type="radio"] {
-    accent-color: var(--navy-900);
-    width: 16px;
-    height: 16px;
-  }
-
-  .device-option:has(input:checked) {
-    border-color: var(--navy-700);
-    background: var(--navy-100);
-    color: var(--navy-900);
-    box-shadow: inset 0 0 0 1.5px var(--navy-700);
-  }
-
-  .wl-card .btn-accent {
-    border: none;
-    padding: 15px 20px;
-    border-radius: 10px;
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 15.5px;
-    width: 100%;
-    margin-top: 6px;
-  }
-
-  .wl-fine-print {
-    margin-top: 18px;
-    font-size: 12.5px;
-    color: var(--navy-500);
-  }
-
-  .wl-success {
-    display: none;
-  }
-
-  .wl-success.is-active { display: block; }
-
-  .wl-success-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: var(--navy-900);
-    color: var(--white);
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-  }
-
-  .wl-success h1 { font-size: 24px; }
-
-  .wl-success p {
-    color: var(--navy-700);
-    font-size: 15px;
-    max-width: 32ch;
-    margin: 0 auto;
-  }
-
-  .wl-card.is-submitted .wl-form-state { display: none; }
-
-  @media (max-width: 380px) {
-    .device-group { grid-template-columns: 1fr; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>easeva — the office manager for tradespeople </title>
+  <meta name="description"
+    content="Easeva answers your calls when you're working, handles the forms and certificates, and keeps clients coming back">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --white: #FFFFFF;
+      --navy-900: #0B1B33;
+      --navy-800: #0F2547;
+      --navy-700: #16305C;
+      --navy-500: #2C4A7C;
+      --navy-100: #EEF2F8;
+      --navy-border: #DCE4F0;
+      --accent: #0B1B33;
+      --accent-ink: #060F1E;
+      --font-display: 'Archivo', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --max-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--navy-900);
+      background: var(--white);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: var(--font-display);
+      color: var(--navy-900);
+      line-height: 1.15;
+      margin: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .wrap {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+
+    .logo .logo-ease {
+      color: var(--navy-900);
+    }
+
+    .logo .logo-va {
+      color: var(--navy-500);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 15px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: var(--white);
+      padding: 13px 24px;
+    }
+
+    .btn-accent:hover {
+      background: var(--accent-ink);
+      transform: translateY(-1px);
+    }
+
+    .btn-accent:focus-visible,
+    a:focus-visible,
+    summary:focus-visible,
+    input:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--navy-500);
+      outline-offset: 2px;
+    }
+
+    /* ================= HOME VIEW ================= */
+
+    /* ---------- Nav ---------- */
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--navy-border);
+    }
+
+    .nav .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+
+    .nav .btn-accent {
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+
+    /* ---------- Hero ---------- */
+
+    .hero {
+      padding: 88px 0 96px;
+    }
+
+    .hero .wrap {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(34px, 4.4vw, 52px);
+      letter-spacing: -0.02em;
+      max-width: 12ch;
+    }
+
+    .hero-sub {
+      margin-top: 24px;
+      font-size: 18px;
+      color: var(--navy-700);
+      max-width: 46ch;
+    }
+
+    .hero-sub p {
+      margin: 0 0 6px;
+    }
+
+    .hero-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 28px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hero-bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .hero-bullets .emoji {
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    .hero-cta {
+      margin-top: 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .hero-cta .btn-accent {
+      padding: 16px 30px;
+      font-size: 16px;
+    }
+
+    .hero-cta-note {
+      font-size: 14px;
+      color: var(--navy-500);
+      font-weight: 500;
+    }
+
+    /* Hero image placeholder — vertical iOS app frame */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-frame {
+      background: var(--navy-900);
+      border-radius: 40px;
+      padding: 14px;
+      width: min(100%, 290px);
+      box-shadow: 0 30px 60px -20px rgba(11, 27, 51, 0.35);
+    }
+
+    .hero-frame-bar {
+      display: flex;
+      justify-content: center;
+      padding: 4px 0 10px;
+    }
+
+    .hero-frame-notch {
+      width: 90px;
+      height: 20px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .hero-frame-inner {
+      background: var(--navy-100);
+      border: 1.5px dashed var(--navy-500);
+      border-radius: 26px;
+      aspect-ratio: 9 / 18.5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .hero-frame-inner p {
+      color: var(--navy-700);
+      font-weight: 600;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .hero-frame-inner span {
+      display: block;
+      font-weight: 400;
+      color: var(--navy-500);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    /* ---------- How it works ---------- */
+
+    .how {
+      padding: 96px 0;
+      background: var(--navy-100);
+    }
+
+    .section-head {
+      max-width: 40ch;
+      margin: 0 0 56px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(26px, 3vw, 34px);
+      letter-spacing: -0.01em;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0 28px;
+      align-items: start;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .step-index {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--navy-900);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 19px;
+    }
+
+    .step h3 {
+      font-size: 21px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--navy-700);
+      font-size: 16px;
+      max-width: 34ch;
+    }
+
+    .step-connector {
+      align-self: center;
+      height: 2px;
+      width: 100%;
+      min-width: 40px;
+      margin-top: 22px;
+      background-image: linear-gradient(to right, var(--navy-500) 50%, transparent 50%);
+      background-size: 10px 2px;
+      background-repeat: repeat-x;
+    }
+
+    .trust-strip {
+      margin-top: 56px;
+      background: var(--navy-900);
+      border-radius: 14px;
+      padding: 26px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .trust-strip .check {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--white);
+      color: var(--navy-900);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .trust-strip p {
+      margin: 0;
+      color: var(--white);
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    /* ---------- Waitlist band (on home page) ---------- */
+
+    .waitlist-band {
+      background: var(--navy-900);
+      padding: 96px 0;
+      text-align: center;
+    }
+
+    .waitlist-band h2 {
+      color: var(--white);
+      font-size: clamp(28px, 3.4vw, 38px);
+    }
+
+    .waitlist-band-sub {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 17px;
+      margin: 14px 0 36px;
+    }
+
+    .waitlist-band .btn-accent {
+      background: var(--white);
+      color: var(--navy-900);
+    }
+
+    .waitlist-band .btn-accent:hover {
+      background: var(--navy-100);
+    }
+
+    /* ---------- FAQ ---------- */
+
+    .faq {
+      padding: 96px 0 110px;
+    }
+
+    .faq-list {
+      max-width: 760px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--navy-border);
+    }
+
+    .faq-item summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 22px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      font-weight: 600;
+      font-size: 17px;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-item .plus {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1.5px solid var(--navy-500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: var(--navy-700);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .faq-item[open] .plus {
+      transform: rotate(45deg);
+      background: var(--navy-900);
+      color: var(--white);
+      border-color: var(--navy-900);
+    }
+
+    .faq-item p {
+      margin: 0 0 24px;
+      color: var(--navy-700);
+      font-size: 15.5px;
+      max-width: 62ch;
+    }
+
+    @media (max-width: 880px) {
+      .hero .wrap {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .hero {
+        padding: 56px 0 64px;
+      }
+
+      .hero-visual {
+        order: -1;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .step-connector {
+        display: none;
+      }
+
+      .how,
+      .waitlist-band,
+      .faq {
+        padding: 64px 0;
+      }
+
+      .trust-strip {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .wrap {
+        padding: 0 20px;
+      }
+
+      .nav .logo {
+        font-size: 19px;
+      }
+    }
+
+    /* ================= WAITLIST VIEW ================= */
+
+    #waitlist-view {
+      display: none;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+
+    .wl-card-wrap {
+      position: relative;
+      max-width: 460px;
+      width: 100%;
+    }
+
+    .wl-back-link {
+      position: absolute;
+      top: -44px;
+      left: 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy-700);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .wl-back-link:hover {
+      color: var(--navy-900);
+    }
+
+    .wl-card {
+      background: var(--white);
+      border: 1.5px solid var(--navy-border);
+      border-radius: 20px;
+      max-width: 460px;
+      width: 100%;
+      padding: 48px 40px 40px;
+      box-shadow: 0 30px 60px -25px rgba(11, 27, 51, 0.25);
+      text-align: center;
+      position: relative;
+    }
+
+    .wl-card .logo {
+      font-size: 20px;
+      display: inline-block;
+      margin-bottom: 22px;
+    }
+
+    .wl-badge {
+      display: inline-block;
+      background: var(--navy-100);
+      color: var(--navy-700);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+
+    .wl-card h1 {
+      font-size: 28px;
+    }
+
+    .wl-sub {
+      color: var(--navy-700);
+      font-size: 15.5px;
+      max-width: 34ch;
+      margin: 8px auto 30px;
+    }
+
+    #waitlistForm {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    #waitlistForm input[type="text"],
+    #waitlistForm input[type="email"] {
+      width: 100%;
+      padding: 15px 16px;
+      border-radius: 10px;
+      border: 1.5px solid var(--navy-border);
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--navy-900);
+      background: var(--navy-100);
+    }
+
+    #waitlistForm input::placeholder {
+      color: var(--navy-500);
+    }
+
+    .phone-field {
+      display: flex;
+      gap: 8px;
+    }
+
+    .country-code {
+      flex: 0 0 96px;
+      padding: 15px 8px;
+      border-radius: 10px;
+      border: 1.5px solid var(--navy-border);
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      color: var(--navy-900);
+      background: var(--navy-100);
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, var(--navy-500) 50%), linear-gradient(135deg, var(--navy-500) 50%, transparent 50%);
+      background-position: calc(100% - 16px) calc(50% - 2px), calc(100% - 11px) calc(50% - 2px);
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+      cursor: pointer;
+    }
+
+    .phone-field input[type="tel"] {
+      flex: 1;
+      min-width: 0;
+      padding: 15px 16px;
+      border-radius: 10px;
+      border: 1.5px solid var(--navy-border);
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--navy-900);
+      background: var(--navy-100);
+    }
+
+    .phone-field input::placeholder {
+      color: var(--navy-500);
+    }
+
+    .device-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .device-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 10px;
+      border-radius: 10px;
+      border: 1.5px solid var(--navy-border);
+      background: var(--navy-100);
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--navy-700);
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+    }
+
+    .device-option input[type="radio"] {
+      accent-color: var(--navy-900);
+      width: 16px;
+      height: 16px;
+    }
+
+    .device-option:has(input:checked) {
+      border-color: var(--navy-700);
+      background: var(--navy-100);
+      color: var(--navy-900);
+      box-shadow: inset 0 0 0 1.5px var(--navy-700);
+    }
+
+    .wl-card .btn-accent {
+      border: none;
+      padding: 15px 20px;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 15.5px;
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .wl-fine-print {
+      margin-top: 18px;
+      font-size: 12.5px;
+      color: var(--navy-500);
+    }
+
+    .wl-success {
+      display: none;
+    }
+
+    .wl-success.is-active {
+      display: block;
+    }
+
+    .wl-success-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--navy-900);
+      color: var(--white);
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .wl-success h1 {
+      font-size: 24px;
+    }
+
+    .wl-success p {
+      color: var(--navy-700);
+      font-size: 15px;
+      max-width: 32ch;
+      margin: 0 auto;
+    }
+
+    .wl-card.is-submitted .wl-form-state {
+      display: none;
+    }
+
+    @media (max-width: 380px) {
+      .device-group {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- ================= HOME VIEW ================= -->
-<div id="home-view">
+  <!-- ================= HOME VIEW ================= -->
+  <div id="home-view">
 
-  <nav class="nav">
-    <div class="wrap">
-      <a href="#" class="logo"><span class="logo-ease">ease</span><span class="logo-va">va</span></a>
-      <a href="#waitlist" class="btn btn-accent" data-view="waitlist">Join waitlist</a>
-    </div>
-  </nav>
-
-  <header class="hero">
-    <div class="wrap">
-      <div class="hero-content">
-        <h1>Every tradesperson needs an office manager</h1>
-        <div class="hero-sub">
-          <p>Easeva answers your calls when you're working, handles the forms and certificates, and keeps clients coming back</p>
-          <p>Easeva runs the admin — you run the business</p>
-        </div>
-        <ul class="hero-bullets">
-          <li><span class="emoji">📞</span><span>Answers calls when you're away</span></li>
-          <li><span class="emoji">📋</span><span>Fills out forms, documents, certificates</span></li>
-          <li><span class="emoji">🤝</span><span>Keeps clients happy — so they stay, and send you more work</span></li>
-        </ul>
-        <div class="hero-cta">
-          <a href="#waitlist" class="btn btn-accent" data-view="waitlist">Join the waitlist</a>
-          <span class="hero-cta-note">Be among 20 users who can try it free</span>
-        </div>
+    <nav class="nav">
+      <div class="wrap">
+        <a href="#" class="logo"><span class="logo-ease">ease</span><span class="logo-va">va</span></a>
+        <a href="#waitlist" class="btn btn-accent" data-view="waitlist">Join waitlist</a>
       </div>
-      <div class="hero-visual">
-        <div class="hero-frame">
-          <div class="hero-frame-bar">
-            <span class="hero-frame-notch"></span>
+    </nav>
+
+    <header class="hero">
+      <div class="wrap">
+        <div class="hero-content">
+          <h1>Every tradesperson needs an office manager</h1>
+          <div class="hero-sub">
+            <p>Easeva answers your calls when you're working, handles the forms and certificates, and keeps clients
+              coming back</p>
+            <p>Easeva runs the admin — you run the business</p>
           </div>
-          <!-- PLACEHOLDER: replace this div with <img src="your-ios-screenshot.png" alt="Easeva app preview" style="width:100%;height:100%;object-fit:cover;border-radius:26px;"> -->
-          <div class="hero-frame-inner">
-            <p>App preview goes here<span>Swap this block for your iOS app screenshot</span></p>
+          <ul class="hero-bullets">
+            <li><span class="emoji">📞</span><span>Answers calls when you're away</span></li>
+            <li><span class="emoji">📋</span><span>Fills out forms, documents, certificates</span></li>
+            <li><span class="emoji">🤝</span><span>Keeps clients happy — so they stay, and send you more work</span>
+            </li>
+          </ul>
+          <div class="hero-cta">
+            <a href="#waitlist" class="btn btn-accent" data-view="waitlist">Join the waitlist</a>
+            <span class="hero-cta-note">Be among 20 users who can try it free</span>
           </div>
         </div>
-      </div>
-    </div>
-  </header>
-
-  <section class="how" id="how-it-works">
-    <div class="wrap">
-      <div class="section-head">
-        <h2>How it works</h2>
-      </div>
-      <div class="steps">
-        <div class="step">
-          <span class="step-index" aria-hidden="true">📞</span>
-          <h3>A call comes in</h3>
-          <p>Easeva picks it up if you're not around, sends you a summary, drafts a reply, puts a quote together</p>
-        </div>
-        <div class="step-connector" aria-hidden="true"></div>
-        <div class="step">
-          <span class="step-index" aria-hidden="true">🧰</span>
-          <h3>You go to a job</h3>
-          <p>Just update it over voice, and Easeva handles the rest — follow-ups, chasing, and drafting the forms and certificates from what you've told it</p>
+        <div class="hero-visual">
+          <div class="hero-frame">
+            <div class="hero-frame-bar">
+              <span class="hero-frame-notch"></span>
+            </div>
+            <!-- PLACEHOLDER: replace this div with <img src="your-ios-screenshot.png" alt="Easeva app preview" style="width:100%;height:100%;object-fit:cover;border-radius:26px;"> -->
+            <img src="HomePage_ios.png" alt="Easeva app preview" class="hero-frame-inner"
+              style="width:100%;height:100%;object-fit:cover;">
+          </div>
         </div>
       </div>
-      <div class="trust-strip">
-        <span class="check">✓</span>
-        <p>Nothing goes to a client without your say-so — you approve everything before it's sent</p>
-      </div>
-    </div>
-  </section>
+    </header>
 
-  <section class="waitlist-band" id="waitlist">
-    <div class="wrap">
-      <h2>Be first in line</h2>
-      <p class="waitlist-band-sub">Free for early users</p>
-      <a href="#waitlist" class="btn btn-accent" data-view="waitlist" style="padding: 16px 34px; font-size: 16px;">Join the waitlist</a>
-    </div>
-  </section>
-
-  <section class="faq" id="faq">
-    <div class="wrap">
-      <div class="section-head">
-        <h2>Frequently asked questions</h2>
-      </div>
-      <div class="faq-list">
-        <details class="faq-item">
-          <summary>Will Easeva take over talking to my clients?<span class="plus">+</span></summary>
-          <p>No — you're always in control Easeva drafts replies, quotes, and forms, but nothing goes to a client until you've approved it</p>
-        </details>
-        <details class="faq-item">
-          <summary>What if I don't want to hand everything over straight away?<span class="plus">+</span></summary>
-          <p>You don't have to Start with the bits you're comfortable with — like call answering — and hand over more as you get confident</p>
-        </details>
-        <details class="faq-item">
-          <summary>Do I need to change my number or how clients reach me?<span class="plus">+</span></summary>
-          <p>For calls, it's still your number — nothing changes there For messaging, it depends on how deep you want to go: if you've already got WhatsApp Business, we can connect straight to that If not, we can set you up with a new number just for that</p>
-        </details>
-        <details class="faq-item">
-          <summary>What does it actually do for me?<span class="plus">+</span></summary>
-          <p>It picks up calls when you're not free, drafts quotes and replies, keeps track of your jobs, fills out paperwork and certificates from what you tell it, and chases things up so you don't have to</p>
-        </details>
-        <details class="faq-item">
-          <summary>Is my client and business data safe?<span class="plus">+</span></summary>
-          <p>Yes — your data is kept secure and private, and it's never shared or used for anything beyond running your business</p>
-        </details>
-        <details class="faq-item">
-          <summary>What will it cost?<span class="plus">+</span></summary>
-          <p>Early waitlist members get free access when we launch — pricing after that will be announced closer to launch</p>
-        </details>
-        <details class="faq-item">
-          <summary>Which trades is this for?<span class="plus">+</span></summary>
-          <p>Any sole trader who deals with enquiries, quotes, and paperwork — plumbers, electricians, heating engineers, decorators, and more</p>
-        </details>
-        <details class="faq-item">
-          <summary>When can I start using it?<span class="plus">+</span></summary>
-          <p>We're onboarding waitlist members first, in order — the sooner you join, the sooner you're in</p>
-        </details>
-      </div>
-    </div>
-  </section>
-
-</div>
-
-<!-- ================= WAITLIST VIEW ================= -->
-<div id="waitlist-view">
-  <div class="wl-card-wrap">
-    <a href="#" class="wl-back-link" data-view="home">&larr; Back to Easeva</a>
-    <div class="wl-card" id="waitlistCard">
-
-      <div class="wl-form-state">
-        <a href="#" class="logo" data-view="home"><span class="logo-ease">ease</span><span class="logo-va">va</span></a>
-        <div class="wl-badge">Only 20 free spots</div>
-        <h1>Join the waitlist</h1>
-        <p class="wl-sub">Be among the first 20 tradespeople to run Easeva free — no card, no commitment</p>
-
-        <form id="waitlistForm">
-          <input type="text" id="waitlistName" placeholder="Your name" aria-label="Your name" required>
-          <div class="phone-field">
-            <select id="waitlistCountryCode" class="country-code" aria-label="Country code">
-              <option value="+44" selected>UK +44</option>
-              <option value="+353">IE +353</option>
-              <option value="+1">US +1</option>
-              <option value="+33">FR +33</option>
-              <option value="+49">DE +49</option>
-              <option value="+34">ES +34</option>
-              <option value="+39">IT +39</option>
-              <option value="+48">PL +48</option>
-              <option value="+91">IN +91</option>
-              <option value="+61">AU +61</option>
-            </select>
-            <input type="tel" id="waitlistPhone" placeholder="7700 900000" aria-label="Phone number" required>
+    <section class="how" id="how-it-works">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>How it works</h2>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <span class="step-index" aria-hidden="true">📞</span>
+            <h3>A call comes in</h3>
+            <p>Easeva picks it up if you're not around, sends you a summary, drafts a reply, puts a quote together</p>
           </div>
-          <input type="email" id="waitlistEmail" placeholder="Email (optional)" aria-label="Email address (optional)">
-          <div class="device-group" role="radiogroup" aria-label="What phone do you use">
-            <label class="device-option">
-              <input type="radio" name="device" value="ios" required>
-              <span>iPhone (iOS)</span>
-            </label>
-            <label class="device-option">
-              <input type="radio" name="device" value="android" required>
-              <span>Android</span>
-            </label>
+          <div class="step-connector" aria-hidden="true"></div>
+          <div class="step">
+            <span class="step-index" aria-hidden="true">🧰</span>
+            <h3>You go to a job</h3>
+            <p>Just update it over voice, and Easeva handles the rest — follow-ups, chasing, and drafting the forms and
+              certificates from what you've told it</p>
           </div>
-          <button type="submit" class="btn btn-accent">Join the waitlist</button>
-        </form>
-        <p class="wl-fine-print">No spam — just one email when it's your turn</p>
+        </div>
+        <div class="trust-strip">
+          <span class="check">✓</span>
+          <p>Nothing goes to a client without your say-so — you approve everything before it's sent</p>
+        </div>
       </div>
+    </section>
 
-      <div class="wl-success" id="successIos">
-        <div class="wl-success-icon">✓</div>
-        <h1>Congratulations</h1>
-        <p>You're among the first 20 — we'll reach out soon</p>
+    <section class="waitlist-band" id="waitlist">
+      <div class="wrap">
+        <h2>Be first in line</h2>
+        <p class="waitlist-band-sub">Free for early users</p>
+        <a href="#waitlist" class="btn btn-accent" data-view="waitlist"
+          style="padding: 16px 34px; font-size: 16px;">Join the waitlist</a>
       </div>
+    </section>
 
-      <div class="wl-success" id="successAndroid">
-        <div class="wl-success-icon">✓</div>
-        <h1>You're on the list</h1>
-        <p>We've started with iOS — the Android app is coming soon, stay tuned</p>
+    <section class="faq" id="faq">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Frequently asked questions</h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>Will Easeva take over talking to my clients?<span class="plus">+</span></summary>
+            <p>No — you're always in control Easeva drafts replies, quotes, and forms, but nothing goes to a client
+              until you've approved it</p>
+          </details>
+          <details class="faq-item">
+            <summary>What if I don't want to hand everything over straight away?<span class="plus">+</span></summary>
+            <p>You don't have to Start with the bits you're comfortable with — like call answering — and hand over more
+              as you get confident</p>
+          </details>
+          <details class="faq-item">
+            <summary>Do I need to change my number or how clients reach me?<span class="plus">+</span></summary>
+            <p>For calls, it's still your number — nothing changes there For messaging, it depends on how deep you want
+              to go: if you've already got WhatsApp Business, we can connect straight to that If not, we can set you up
+              with a new number just for that</p>
+          </details>
+          <details class="faq-item">
+            <summary>What does it actually do for me?<span class="plus">+</span></summary>
+            <p>It picks up calls when you're not free, drafts quotes and replies, keeps track of your jobs, fills out
+              paperwork and certificates from what you tell it, and chases things up so you don't have to</p>
+          </details>
+          <details class="faq-item">
+            <summary>Is my client and business data safe?<span class="plus">+</span></summary>
+            <p>Yes — your data is kept secure and private, and it's never shared or used for anything beyond running
+              your business</p>
+          </details>
+          <details class="faq-item">
+            <summary>What will it cost?<span class="plus">+</span></summary>
+            <p>Early waitlist members get free access when we launch — pricing after that will be announced closer to
+              launch</p>
+          </details>
+          <details class="faq-item">
+            <summary>Which trades is this for?<span class="plus">+</span></summary>
+            <p>Any sole trader who deals with enquiries, quotes, and paperwork — plumbers, electricians, heating
+              engineers, decorators, and more</p>
+          </details>
+          <details class="faq-item">
+            <summary>When can I start using it?<span class="plus">+</span></summary>
+            <p>We're onboarding waitlist members first, in order — the sooner you join, the sooner you're in</p>
+          </details>
+        </div>
       </div>
+    </section>
 
+  </div>
+
+  <!-- ================= WAITLIST VIEW ================= -->
+  <div id="waitlist-view">
+    <div class="wl-card-wrap">
+      <a href="#" class="wl-back-link" data-view="home">&larr; Back to Easeva</a>
+      <div class="wl-card" id="waitlistCard">
+
+        <div class="wl-form-state">
+          <a href="#" class="logo" data-view="home"><span class="logo-ease">ease</span><span
+              class="logo-va">va</span></a>
+          <div class="wl-badge">Only 20 free spots</div>
+          <h1>Join the waitlist</h1>
+          <p class="wl-sub">Be among the first 20 tradespeople to run Easeva free — no card, no commitment</p>
+
+          <form id="waitlistForm">
+            <input type="text" id="waitlistName" placeholder="Your name" aria-label="Your name" required>
+            <div class="phone-field">
+              <select id="waitlistCountryCode" class="country-code" aria-label="Country code">
+                <option value="+44" selected>UK +44</option>
+                <option value="+353">IE +353</option>
+                <option value="+1">US +1</option>
+                <option value="+33">FR +33</option>
+                <option value="+49">DE +49</option>
+                <option value="+34">ES +34</option>
+                <option value="+39">IT +39</option>
+                <option value="+48">PL +48</option>
+                <option value="+91">IN +91</option>
+                <option value="+61">AU +61</option>
+              </select>
+              <input type="tel" id="waitlistPhone" placeholder="7700 900000" aria-label="Phone number" required>
+            </div>
+            <input type="email" id="waitlistEmail" placeholder="Email (optional)" aria-label="Email address (optional)">
+            <div class="device-group" role="radiogroup" aria-label="What phone do you use">
+              <label class="device-option">
+                <input type="radio" name="device" value="ios" required>
+                <span>iPhone (iOS)</span>
+              </label>
+              <label class="device-option">
+                <input type="radio" name="device" value="android" required>
+                <span>Android</span>
+              </label>
+            </div>
+            <button type="submit" class="btn btn-accent">Join the waitlist</button>
+          </form>
+          <p class="wl-fine-print">No spam — just one email when it's your turn</p>
+        </div>
+
+        <div class="wl-success" id="successIos">
+          <div class="wl-success-icon">✓</div>
+          <h1>Congratulations</h1>
+          <p>You're among the first 20 — we'll reach out soon</p>
+        </div>
+
+        <div class="wl-success" id="successAndroid">
+          <div class="wl-success-icon">✓</div>
+          <h1>You're on the list</h1>
+          <p>We've started with iOS — the Android app is coming soon, stay tuned</p>
+        </div>
+
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-  // ---------- View routing (single-page: home / waitlist) ----------
-  function showView(view) {
-    var isWaitlist = view === 'waitlist';
-    document.getElementById('home-view').style.display = isWaitlist ? 'none' : '';
-    document.getElementById('waitlist-view').style.display = isWaitlist ? 'flex' : 'none';
-    window.scrollTo(0, 0);
-  }
-
-  document.querySelectorAll('[data-view]').forEach(function (el) {
-    el.addEventListener('click', function (e) {
-      e.preventDefault();
-      var view = this.getAttribute('data-view');
-      showView(view);
-      history.replaceState(null, '', view === 'waitlist' ? '#waitlist' : '#');
-    });
-  });
-
-  showView(location.hash === '#waitlist' ? 'waitlist' : 'home');
-
-  // ---------- Waitlist form submission ----------
-  // Paste the Web App URL from your Apps Script deployment here (ends in /exec)
-  var WAITLIST_ENDPOINT = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
-
-  document.getElementById('waitlistForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    var device = document.querySelector('input[name="device"]:checked').value;
-    var payload = {
-      name: document.getElementById('waitlistName').value,
-      countryCode: document.getElementById('waitlistCountryCode').value,
-      phone: document.getElementById('waitlistPhone').value,
-      email: document.getElementById('waitlistEmail').value,
-      device: device
-    };
-
-    // mode: 'no-cors' is required for Apps Script web apps called from another
-    // domain (like GitHub Pages) — it means we can't read the response back,
-    // so we can't confirm success or show an error if it fails. This is the
-    // standard trade-off for this approach and works reliably in practice.
-    fetch(WAITLIST_ENDPOINT, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
-    }).catch(function (err) {
-      console.error('Waitlist submission failed to send', err);
-    });
-
-    document.getElementById('waitlistCard').classList.add('is-submitted');
-    if (device === 'ios') {
-      document.getElementById('successIos').classList.add('is-active');
-    } else {
-      document.getElementById('successAndroid').classList.add('is-active');
+  <script>
+    // ---------- View routing (single-page: home / waitlist) ----------
+    function showView(view) {
+      var isWaitlist = view === 'waitlist';
+      document.getElementById('home-view').style.display = isWaitlist ? 'none' : '';
+      document.getElementById('waitlist-view').style.display = isWaitlist ? 'flex' : 'none';
+      window.scrollTo(0, 0);
     }
-  });
-</script>
+
+    document.querySelectorAll('[data-view]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        var view = this.getAttribute('data-view');
+        showView(view);
+        history.replaceState(null, '', view === 'waitlist' ? '#waitlist' : '#');
+      });
+    });
+
+    showView(location.hash === '#waitlist' ? 'waitlist' : 'home');
+
+    // ---------- Waitlist form submission ----------
+    // Paste the Web App URL from your Apps Script deployment here (ends in /exec)
+    var WAITLIST_ENDPOINT = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+    document.getElementById('waitlistForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var device = document.querySelector('input[name="device"]:checked').value;
+      var payload = {
+        name: document.getElementById('waitlistName').value,
+        countryCode: document.getElementById('waitlistCountryCode').value,
+        phone: document.getElementById('waitlistPhone').value,
+        email: document.getElementById('waitlistEmail').value,
+        device: device
+      };
+
+      // mode: 'no-cors' is required for Apps Script web apps called from another
+      // domain (like GitHub Pages) — it means we can't read the response back,
+      // so we can't confirm success or show an error if it fails. This is the
+      // standard trade-off for this approach and works reliably in practice.
+      fetch(WAITLIST_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      }).catch(function (err) {
+        console.error('Waitlist submission failed to send', err);
+      });
+
+      document.getElementById('waitlistCard').classList.add('is-submitted');
+      if (device === 'ios') {
+        document.getElementById('successIos').classList.add('is-active');
+      } else {
+        document.getElementById('successAndroid').classList.add('is-active');
+      }
+    });
+  </script>
 
 </body>
+
 </html>
