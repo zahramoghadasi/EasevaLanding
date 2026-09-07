@@ -3,741 +3,896 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Easeva — AI Secretary for Tradespeople</title>
+<title>easeva — the office manager every tradesperson needs</title>
+<meta name="description" content="Easeva answers your calls when you're working, handles the forms and certificates, and keeps clients coming back">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --accent: #D97B4F;
-    --accent-dark: #B85F32;
-    --accent-light: #FAF0E8;
-    --bg: #FAFAF8;
-    --bg-card: #FFFFFF;
-    --text: #1A1A18;
-    --text-muted: #6B6B68;
-    --text-light: #9B9B98;
-    --border: #E5E4DF;
-    --radius: 10px;
-    --radius-lg: 16px;
+    --white: #FFFFFF;
+    --navy-900: #0B1B33;
+    --navy-800: #0F2547;
+    --navy-700: #16305C;
+    --navy-500: #2C4A7C;
+    --navy-100: #EEF2F8;
+    --navy-border: #DCE4F0;
+    --accent: #0B1B33;
+    --accent-ink: #060F1E;
+    --font-display: 'Archivo', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --max-width: 1180px;
   }
+
+  * { box-sizing: border-box; }
 
   html { scroll-behavior: smooth; }
 
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
   body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    font-size: 16px;
-    line-height: 1.6;
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--navy-900);
+    background: var(--white);
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
 
-  .page { display: none; min-height: 100vh; }
-  .page.active { display: block; }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    color: var(--navy-900);
+    line-height: 1.15;
+    margin: 0;
+  }
 
-  /* NAV */
-  nav {
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #111110;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+  a { color: inherit; }
+
+  .wrap {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 32px;
   }
 
   .logo {
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: -0.3px;
-    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    text-decoration: none;
   }
 
-  .logo span { color: var(--accent); }
+  .logo .logo-ease { color: var(--navy-900); }
+  .logo .logo-va { color: var(--navy-500); }
 
-  .spots-badge {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--accent);
-    background: rgba(217,123,79,0.12);
-    border: 1px solid rgba(217,123,79,0.3);
-    padding: 5px 12px;
-    border-radius: 4px;
-  }
-
-  /* HERO */
-  .hero {
-    background: #111110;
-    padding: 56px 24px 60px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-      0deg, transparent, transparent 39px,
-      rgba(255,255,255,0.025) 39px, rgba(255,255,255,0.025) 40px
-    );
-    pointer-events: none;
-  }
-
-  .hero-inner {
-    max-width: 640px;
-    margin: 0 auto;
-    position: relative;
-  }
-
-  .hero-tag {
+  .btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: 11px;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--font-body);
     font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--accent);
-    border: 1px solid rgba(217,123,79,0.3);
-    background: rgba(217,123,79,0.08);
-    padding: 5px 12px;
-    border-radius: 4px;
-    margin-bottom: 28px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+
+  .btn-accent {
+    background: var(--accent);
+    color: var(--white);
+    padding: 13px 24px;
+  }
+
+  .btn-accent:hover {
+    background: var(--accent-ink);
+    transform: translateY(-1px);
+  }
+
+  .btn-accent:focus-visible,
+  a:focus-visible,
+  summary:focus-visible,
+  input:focus-visible,
+  button:focus-visible {
+    outline: 3px solid var(--navy-500);
+    outline-offset: 2px;
+  }
+
+  /* ================= HOME VIEW ================= */
+
+  /* ---------- Nav ---------- */
+
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--navy-border);
+  }
+
+  .nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 76px;
+  }
+
+  .nav .btn-accent {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  /* ---------- Hero ---------- */
+
+  .hero {
+    padding: 88px 0 96px;
+  }
+
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 56px;
+    align-items: center;
   }
 
   .hero h1 {
-    font-size: clamp(38px, 7vw, 60px);
-    font-weight: 600;
-    line-height: 1.08;
-    letter-spacing: -1.5px;
-    color: #FFFFFF;
-    margin-bottom: 6px;
+    font-size: clamp(34px, 4.4vw, 52px);
+    letter-spacing: -0.02em;
+    max-width: 12ch;
   }
 
-  .hero h1 em {
-    font-style: normal;
-    color: var(--accent);
+  .hero-sub {
+    margin-top: 24px;
+    font-size: 18px;
+    color: var(--navy-700);
+    max-width: 46ch;
   }
 
-  .hero-rule {
-    width: 40px;
-    height: 3px;
-    background: var(--accent);
-    margin: 24px 0;
-    border-radius: 2px;
-  }
+  .hero-sub p { margin: 0 0 6px; }
 
-  .hero-body {
-    font-size: 16px;
-    color: #A0A09C;
-    line-height: 1.75;
-    max-width: 500px;
-    margin-bottom: 14px;
-  }
-
-  .hero-body strong { color: #DDDDD8; font-weight: 500; }
-
-  .hero-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 28px 0 40px;
-  }
-
-  .hero-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 12px;
-    font-weight: 500;
-    color: #B0B0AC;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 7px 13px;
-    border-radius: 4px;
-  }
-
-  .pill-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--accent);
-    flex-shrink: 0;
-  }
-
-  /* CTA BLOCK */
-  .cta-block {
+  .hero-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 28px 0 0;
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
 
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: var(--accent);
-    color: #fff;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 15px 28px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.15s, transform 0.1s;
-    width: 100%;
-    max-width: 320px;
-    letter-spacing: -0.2px;
+  .hero-bullets li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 16px;
+    font-weight: 500;
   }
 
-  .btn-primary:hover { background: var(--accent-dark); }
-  .btn-primary:active { transform: scale(0.99); }
+  .hero-bullets .emoji {
+    font-size: 18px;
+    line-height: 1.4;
+  }
 
-  .cta-sub {
-    font-size: 12px;
-    color: #555552;
+  .hero-cta {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .hero-cta .btn-accent {
+    padding: 16px 30px;
+    font-size: 16px;
+  }
+
+  .hero-cta-note {
+    font-size: 14px;
+    color: var(--navy-500);
+    font-weight: 500;
+  }
+
+  /* Hero image placeholder — vertical iOS app frame */
+  .hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-frame {
+    background: var(--navy-900);
+    border-radius: 40px;
+    padding: 14px;
+    width: min(100%, 290px);
+    box-shadow: 0 30px 60px -20px rgba(11,27,51,0.35);
+  }
+
+  .hero-frame-bar {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0 10px;
+  }
+
+  .hero-frame-notch {
+    width: 90px;
+    height: 20px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+  }
+
+  .hero-frame-inner {
+    background: var(--navy-100);
+    border: 1.5px dashed var(--navy-500);
+    border-radius: 26px;
+    aspect-ratio: 9 / 18.5;
     display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
   }
 
-  /* DIVIDER */
-  .divider {
-    max-width: 680px;
-    margin: 0 auto 56px;
-    padding: 0 24px;
-    border-top: 1px solid var(--border);
-  }
-
-  /* SECTIONS */
-  .section {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 0 24px 56px;
-  }
-
-  .section-label {
-    font-size: 11px;
+  .hero-frame-inner p {
+    color: var(--navy-700);
     font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--text-light);
-    margin-bottom: 28px;
+    font-size: 14px;
+    margin: 0;
   }
 
-  /* TEAM */
-  .team-grid {
+  .hero-frame-inner span {
+    display: block;
+    font-weight: 400;
+    color: var(--navy-500);
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  /* ---------- How it works ---------- */
+
+  .how {
+    padding: 96px 0;
+    background: var(--navy-100);
+  }
+
+  .section-head {
+    max-width: 40ch;
+    margin: 0 0 56px;
+  }
+
+  .section-head h2 {
+    font-size: clamp(26px, 3vw, 34px);
+    letter-spacing: -0.01em;
+  }
+
+  .steps {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0 28px;
+    align-items: start;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
     gap: 16px;
-    margin-bottom: 16px;
   }
 
-  @media (max-width: 480px) {
-    .team-grid { grid-template-columns: 1fr; }
-    .hero { padding: 40px 20px 48px; }
-    .section { padding: 0 20px 40px; }
-    nav { padding: 14px 20px; }
-    .page2-inner { padding: 32px 20px 60px; }
-    .form-step { padding: 20px; }
-    .hero-pills { gap: 6px; }
-  }
-
-  .team-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-  }
-
-  .team-avatar {
+  .step-index {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: var(--accent-light);
-    border: 1px solid #F0C4A8;
-    color: var(--accent-dark);
-    font-size: 13px;
-    font-weight: 600;
+    background: var(--navy-900);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 12px;
+    flex-shrink: 0;
+    font-size: 19px;
   }
 
-  .team-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-  .team-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  .step h3 {
+    font-size: 21px;
+  }
 
-  .team-card a {
-    display: inline-flex;
+  .step p {
+    margin: 0;
+    color: var(--navy-700);
+    font-size: 16px;
+    max-width: 34ch;
+  }
+
+  .step-connector {
+    align-self: center;
+    height: 2px;
+    width: 100%;
+    min-width: 40px;
+    margin-top: 22px;
+    background-image: linear-gradient(to right, var(--navy-500) 50%, transparent 50%);
+    background-size: 10px 2px;
+    background-repeat: repeat-x;
+  }
+
+  .trust-strip {
+    margin-top: 56px;
+    background: var(--navy-900);
+    border-radius: 14px;
+    padding: 26px 32px;
+    display: flex;
     align-items: center;
-    gap: 4px;
-    font-size: 12px;
-    color: var(--accent-dark);
-    text-decoration: none;
-    margin-top: 10px;
+    gap: 16px;
+  }
+
+  .trust-strip .check {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--navy-900);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .trust-strip p {
+    margin: 0;
+    color: var(--white);
+    font-size: 17px;
     font-weight: 500;
   }
 
-  .team-card a:hover { text-decoration: underline; }
+  /* ---------- Waitlist band (on home page) ---------- */
 
-  .hackathon-note {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 18px;
-  }
-
-  .hackathon-note p { font-size: 13px; color: var(--text-muted); }
-  .hackathon-note strong { color: var(--text); }
-
-  /* BOTTOM CTA */
-  .bottom-cta {
-    background: #111110;
-    padding: 56px 24px;
+  .waitlist-band {
+    background: var(--navy-900);
+    padding: 96px 0;
     text-align: center;
   }
 
-  .bottom-cta h2 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #fff;
-    margin-bottom: 8px;
-    letter-spacing: -0.3px;
+  .waitlist-band h2 {
+    color: var(--white);
+    font-size: clamp(28px, 3.4vw, 38px);
   }
 
-  .bottom-cta p { font-size: 15px; color: #555552; margin-bottom: 28px; }
-  .bottom-cta .btn-primary { margin: 0 auto; }
+  .waitlist-band-sub {
+    color: rgba(255,255,255,0.7);
+    font-size: 17px;
+    margin: 14px 0 36px;
+  }
 
-  /* ===== PAGE 2 ===== */
-  .page2-nav {
-    padding: 18px 24px;
+  .waitlist-band .btn-accent {
+    background: var(--white);
+    color: var(--navy-900);
+  }
+
+  .waitlist-band .btn-accent:hover {
+    background: var(--navy-100);
+  }
+
+  /* ---------- FAQ ---------- */
+
+  .faq {
+    padding: 96px 0 110px;
+  }
+
+  .faq-list {
+    max-width: 760px;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--navy-border);
+  }
+
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 22px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    gap: 20px;
+    font-weight: 600;
+    font-size: 17px;
   }
 
-  .page2-nav .logo { color: var(--text); }
+  .faq-item summary::-webkit-details-marker { display: none; }
 
-  .page2-inner {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 48px 24px 80px;
-  }
-
-  .page2-header { margin-bottom: 40px; }
-  .page2-header h2 { font-size: 24px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 6px; }
-  .page2-header p { font-size: 15px; color: var(--text-muted); }
-
-  .form-step {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 28px;
-    margin-bottom: 20px;
-    transition: opacity 0.3s;
-  }
-
-  .form-step.locked { opacity: 0.4; pointer-events: none; }
-  .form-step h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
-  .form-step .step-hint { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
-
-  .qualify-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-  .qualify-btn {
-    padding: 14px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--bg-card);
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    color: var(--text);
-    font-family: inherit;
-  }
-
-  .qualify-btn:hover { border-color: var(--accent); background: var(--accent-light); }
-  .qualify-btn.selected { border-color: var(--accent); background: var(--accent-light); color: var(--accent-dark); }
-
-  .no-message {
-    display: none;
-    background: #F8F6F4;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    margin-top: 16px;
-  }
-
-  .no-message p { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; }
-
-  .email-row { display: flex; gap: 8px; }
-
-  .email-row input {
-    flex: 1;
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    font-size: 14px;
-    font-family: inherit;
-    color: var(--text);
-    background: var(--bg-card);
-    outline: none;
-  }
-
-  .email-row input:focus { border-color: var(--accent); }
-
-  .btn-sm {
-    padding: 10px 16px;
-    background: var(--text);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    font-family: inherit;
-    white-space: nowrap;
-  }
-
-  .voucher-grid { display: flex; flex-direction: column; gap: 8px; }
-
-  .voucher-card {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    background: var(--bg-card);
-  }
-
-  .voucher-card:hover { border-color: var(--accent); background: var(--accent-light); }
-  .voucher-card.selected { border-color: var(--accent); background: var(--accent-light); }
-  .voucher-card.selected .voucher-check { opacity: 1; }
-
-  .voucher-icon { font-size: 22px; width: 36px; text-align: center; }
-  .voucher-label { flex: 1; }
-  .voucher-label strong { font-size: 14px; font-weight: 500; display: block; }
-  .voucher-label small { font-size: 12px; color: var(--text-muted); }
-
-  .voucher-check {
-    width: 20px;
-    height: 20px;
+  .faq-item .plus {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background: var(--accent);
+    border: 1.5px solid var(--navy-500);
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    transition: opacity 0.15s;
-    flex-shrink: 0;
-  }
-
-  .voucher-check::after {
-    content: '';
-    width: 10px;
-    height: 6px;
-    border-left: 2px solid #fff;
-    border-bottom: 2px solid #fff;
-    transform: rotate(-45deg) translateY(-1px);
-  }
-
-  .btn-next {
-    display: none;
-    width: 100%;
-    margin-top: 20px;
-    padding: 15px;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
     font-size: 15px;
+    color: var(--navy-700);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .faq-item[open] .plus {
+    transform: rotate(45deg);
+    background: var(--navy-900);
+    color: var(--white);
+    border-color: var(--navy-900);
+  }
+
+  .faq-item p {
+    margin: 0 0 24px;
+    color: var(--navy-700);
+    font-size: 15.5px;
+    max-width: 62ch;
+  }
+
+  @media (max-width: 880px) {
+    .hero .wrap { grid-template-columns: 1fr; gap: 48px; }
+    .hero { padding: 56px 0 64px; }
+    .hero-visual { order: -1; }
+    .steps { grid-template-columns: 1fr; gap: 32px; }
+    .step-connector { display: none; }
+    .how, .waitlist-band, .faq { padding: 64px 0; }
+    .trust-strip { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 520px) {
+    .wrap { padding: 0 20px; }
+    .nav .logo { font-size: 19px; }
+  }
+
+  /* ================= WAITLIST VIEW ================= */
+
+  #waitlist-view {
+    display: none;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+
+  .wl-card-wrap { position: relative; max-width: 460px; width: 100%; }
+
+  .wl-back-link {
+    position: absolute;
+    top: -44px;
+    left: 0;
+    font-size: 14px;
     font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background 0.15s;
-  }
-
-  .btn-next:hover { background: var(--accent-dark); }
-  .btn-next.visible { display: block; }
-
-  .calendly-section { display: none; margin-top: 20px; }
-  .calendly-section.visible { display: block; }
-
-  .calendly-embed-wrap {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-
-  .back-link {
+    color: var(--navy-700);
+    text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 14px;
-    color: var(--text-muted);
-    text-decoration: none;
-    margin-bottom: 32px;
+  }
+
+  .wl-back-link:hover { color: var(--navy-900); }
+
+  .wl-card {
+    background: var(--white);
+    border: 1.5px solid var(--navy-border);
+    border-radius: 20px;
+    max-width: 460px;
+    width: 100%;
+    padding: 48px 40px 40px;
+    box-shadow: 0 30px 60px -25px rgba(11,27,51,0.25);
+    text-align: center;
+    position: relative;
+  }
+
+  .wl-card .logo {
+    font-size: 20px;
+    display: inline-block;
+    margin-bottom: 22px;
+  }
+
+  .wl-badge {
+    display: inline-block;
+    background: var(--navy-100);
+    color: var(--navy-700);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+  }
+
+  .wl-card h1 {
+    font-size: 28px;
+  }
+
+  .wl-sub {
+    color: var(--navy-700);
+    font-size: 15.5px;
+    max-width: 34ch;
+    margin: 8px auto 30px;
+  }
+
+  #waitlistForm { display: flex; flex-direction: column; gap: 12px; }
+
+  #waitlistForm input[type="text"],
+  #waitlistForm input[type="email"] {
+    width: 100%;
+    padding: 15px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--navy-border);
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--navy-900);
+    background: var(--navy-100);
+  }
+
+  #waitlistForm input::placeholder { color: var(--navy-500); }
+
+  .phone-field {
+    display: flex;
+    gap: 8px;
+  }
+
+  .country-code {
+    flex: 0 0 96px;
+    padding: 15px 8px;
+    border-radius: 10px;
+    border: 1.5px solid var(--navy-border);
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    color: var(--navy-900);
+    background: var(--navy-100);
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--navy-500) 50%), linear-gradient(135deg, var(--navy-500) 50%, transparent 50%);
+    background-position: calc(100% - 16px) calc(50% - 2px), calc(100% - 11px) calc(50% - 2px);
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
     cursor: pointer;
   }
 
-  .back-link:hover { color: var(--text); }
+  .phone-field input[type="tel"] {
+    flex: 1;
+    min-width: 0;
+    padding: 15px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--navy-border);
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--navy-900);
+    background: var(--navy-100);
+  }
 
-  .step-indicator { display: flex; align-items: center; gap: 8px; margin-bottom: 32px; }
-  .step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: background 0.2s; }
-  .step-dot.done { background: var(--accent); }
-  .step-label { font-size: 13px; color: var(--text-light); margin-left: 4px; }
+  .phone-field input::placeholder { color: var(--navy-500); }
 
-  .notify-confirm { display: none; font-size: 14px; color: var(--accent-dark); font-weight: 500; margin-top: 10px; }
+  .device-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 2px;
+  }
+
+  .device-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 10px;
+    border-radius: 10px;
+    border: 1.5px solid var(--navy-border);
+    background: var(--navy-100);
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--navy-700);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+
+  .device-option input[type="radio"] {
+    accent-color: var(--navy-900);
+    width: 16px;
+    height: 16px;
+  }
+
+  .device-option:has(input:checked) {
+    border-color: var(--navy-700);
+    background: var(--navy-100);
+    color: var(--navy-900);
+    box-shadow: inset 0 0 0 1.5px var(--navy-700);
+  }
+
+  .wl-card .btn-accent {
+    border: none;
+    padding: 15px 20px;
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15.5px;
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  .wl-fine-print {
+    margin-top: 18px;
+    font-size: 12.5px;
+    color: var(--navy-500);
+  }
+
+  .wl-success {
+    display: none;
+  }
+
+  .wl-success.is-active { display: block; }
+
+  .wl-success-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--navy-900);
+    color: var(--white);
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+  }
+
+  .wl-success h1 { font-size: 24px; }
+
+  .wl-success p {
+    color: var(--navy-700);
+    font-size: 15px;
+    max-width: 32ch;
+    margin: 0 auto;
+  }
+
+  .wl-card.is-submitted .wl-form-state { display: none; }
+
+  @media (max-width: 380px) {
+    .device-group { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ===== PAGE 1 ===== -->
-<div class="page active" id="page1">
+<!-- ================= HOME VIEW ================= -->
+<div id="home-view">
 
-  <nav>
-    <div class="logo">ease<span>va</span></div>
-    <div class="spots-badge">20 founding spots</div>
+  <nav class="nav">
+    <div class="wrap">
+      <a href="#" class="logo"><span class="logo-ease">ease</span><span class="logo-va">va</span></a>
+      <a href="#waitlist" class="btn btn-accent" data-view="waitlist">Join waitlist</a>
+    </div>
   </nav>
 
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-tag">For London plumbers &amp; electricians</div>
-      <h1>A secretary that makes<br><em>your life easy.</em></h1>
-      <div class="hero-rule"></div>
-      <p class="hero-body">Are you a <strong>plumber or electrician</strong> running your own business in London?</p>
-      <p class="hero-body">We're building a tool that runs your admin — so you can focus on the work.</p>
-
-      <div class="hero-pills">
-        <span class="hero-pill"><span class="pill-dot"></span>Answers your calls</span>
-        <span class="hero-pill"><span class="pill-dot"></span>Books appointments</span>
-        <span class="hero-pill"><span class="pill-dot"></span>Chases payments</span>
-        <span class="hero-pill"><span class="pill-dot"></span>Advertises for you</span>
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-content">
+        <h1>Every tradesperson needs an office manager</h1>
+        <div class="hero-sub">
+          <p>Easeva answers your calls when you're working, handles the forms and certificates, and keeps clients coming back</p>
+          <p>Easeva runs the admin — you run the business</p>
+        </div>
+        <ul class="hero-bullets">
+          <li><span class="emoji">📞</span><span>Answers calls when you're away</span></li>
+          <li><span class="emoji">📋</span><span>Fills out forms, documents, certificates</span></li>
+          <li><span class="emoji">🤝</span><span>Keeps clients happy — so they stay, and send you more work</span></li>
+        </ul>
+        <div class="hero-cta">
+          <a href="#waitlist" class="btn btn-accent" data-view="waitlist">Join the waitlist</a>
+          <span class="hero-cta-note">Be among 20 users who can try it free</span>
+        </div>
       </div>
+      <div class="hero-visual">
+        <div class="hero-frame">
+          <div class="hero-frame-bar">
+            <span class="hero-frame-notch"></span>
+          </div>
+          <!-- PLACEHOLDER: replace this div with <img src="your-ios-screenshot.png" alt="Easeva app preview" style="width:100%;height:100%;object-fit:cover;border-radius:26px;"> -->
+          <div class="hero-frame-inner">
+            <p>App preview goes here<span>Swap this block for your iOS app screenshot</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-      <p class="hero-body">We need <strong>20 London tradespeople</strong> to help us shape it. Join us and use it for free while we build it together. Let's talk it over a coffee, on us.</p>
-
-      <div class="cta-block" style="margin-top: 36px;">
-        <button class="btn-primary" onclick="goToPage2()">Claim your free coffee →</button>
-        <span class="cta-sub">No commitment · 30 minutes · we come to you</span>
+  <section class="how" id="how-it-works">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How it works</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="step-index" aria-hidden="true">📞</span>
+          <h3>A call comes in</h3>
+          <p>Easeva picks it up if you're not around, sends you a summary, drafts a reply, puts a quote together</p>
+        </div>
+        <div class="step-connector" aria-hidden="true"></div>
+        <div class="step">
+          <span class="step-index" aria-hidden="true">🧰</span>
+          <h3>You go to a job</h3>
+          <p>Just update it over voice, and Easeva handles the rest — follow-ups, chasing, and drafting the forms and certificates from what you've told it</p>
+        </div>
+      </div>
+      <div class="trust-strip">
+        <span class="check">✓</span>
+        <p>Nothing goes to a client without your say-so — you approve everything before it's sent</p>
       </div>
     </div>
   </section>
 
-  <div style="height: 56px;"></div>
-
-  <div class="divider"></div>
-
-  <section class="section">
-    <p class="section-label">The team</p>
-    <div class="team-grid">
-      <div class="team-card">
-        <div class="team-avatar">ZM</div>
-        <h4>Zara Mogadasi</h4>
-        <p>Scaled a ride-hailing app from day one to millions of rides. LBS MBA.</p>
-        <a href="https://www.linkedin.com/in/zaramogadasi/" target="_blank" rel="noopener">LinkedIn ↗</a>
-      </div>
-      <div class="team-card">
-        <div class="team-avatar">MH</div>
-        <h4>Midhat Fatima</h4>
-        <p>Built an AI chatbot used by millions of people every day. LBS MBA.</p>
-        <a href="https://www.linkedin.com/in/itsmidhat/" target="_blank" rel="noopener">LinkedIn ↗</a>
-      </div>
-    </div>
-    <div class="hackathon-note">
-      <span>🏆</span>
-      <p><strong>HackLBS 2026 grand prize winner.</strong> Backed by London Business School.</p>
+  <section class="waitlist-band" id="waitlist">
+    <div class="wrap">
+      <h2>Be first in line</h2>
+      <p class="waitlist-band-sub">Free for early users</p>
+      <a href="#waitlist" class="btn btn-accent" data-view="waitlist" style="padding: 16px 34px; font-size: 16px;">Join the waitlist</a>
     </div>
   </section>
 
-  <div class="bottom-cta">
-    <h2>Ready to get your life back?</h2>
-    <p>20 spots. Free to join. Your coffee's on us.</p>
-    <button class="btn-primary" onclick="goToPage2()">Claim your free coffee →</button>
-  </div>
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Will Easeva take over talking to my clients?<span class="plus">+</span></summary>
+          <p>No — you're always in control Easeva drafts replies, quotes, and forms, but nothing goes to a client until you've approved it</p>
+        </details>
+        <details class="faq-item">
+          <summary>What if I don't want to hand everything over straight away?<span class="plus">+</span></summary>
+          <p>You don't have to Start with the bits you're comfortable with — like call answering — and hand over more as you get confident</p>
+        </details>
+        <details class="faq-item">
+          <summary>Do I need to change my number or how clients reach me?<span class="plus">+</span></summary>
+          <p>For calls, it's still your number — nothing changes there For messaging, it depends on how deep you want to go: if you've already got WhatsApp Business, we can connect straight to that If not, we can set you up with a new number just for that</p>
+        </details>
+        <details class="faq-item">
+          <summary>What does it actually do for me?<span class="plus">+</span></summary>
+          <p>It picks up calls when you're not free, drafts quotes and replies, keeps track of your jobs, fills out paperwork and certificates from what you tell it, and chases things up so you don't have to</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is my client and business data safe?<span class="plus">+</span></summary>
+          <p>Yes — your data is kept secure and private, and it's never shared or used for anything beyond running your business</p>
+        </details>
+        <details class="faq-item">
+          <summary>What will it cost?<span class="plus">+</span></summary>
+          <p>Early waitlist members get free access when we launch — pricing after that will be announced closer to launch</p>
+        </details>
+        <details class="faq-item">
+          <summary>Which trades is this for?<span class="plus">+</span></summary>
+          <p>Any sole trader who deals with enquiries, quotes, and paperwork — plumbers, electricians, heating engineers, decorators, and more</p>
+        </details>
+        <details class="faq-item">
+          <summary>When can I start using it?<span class="plus">+</span></summary>
+          <p>We're onboarding waitlist members first, in order — the sooner you join, the sooner you're in</p>
+        </details>
+      </div>
+    </div>
+  </section>
 
 </div>
 
+<!-- ================= WAITLIST VIEW ================= -->
+<div id="waitlist-view">
+  <div class="wl-card-wrap">
+    <a href="#" class="wl-back-link" data-view="home">&larr; Back to Easeva</a>
+    <div class="wl-card" id="waitlistCard">
 
-<!-- ===== PAGE 2 ===== -->
-<div class="page" id="page2">
+      <div class="wl-form-state">
+        <a href="#" class="logo" data-view="home"><span class="logo-ease">ease</span><span class="logo-va">va</span></a>
+        <div class="wl-badge">Only 20 free spots</div>
+        <h1>Join the waitlist</h1>
+        <p class="wl-sub">Be among the first 20 tradespeople to run Easeva free — no card, no commitment</p>
 
-  <nav class="page2-nav">
-    <div class="logo" style="color: var(--text);">ease<span>va</span></div>
-    <div class="spots-badge" style="color: var(--accent-dark); background: var(--accent-light); border-color: #F0C4A8;">20 founding spots</div>
-  </nav>
-
-  <div class="page2-inner">
-
-    <a class="back-link" onclick="goToPage1()">← Back</a>
-
-    <div class="step-indicator">
-      <div class="step-dot" id="dot1"></div>
-      <div class="step-dot" id="dot2"></div>
-      <div class="step-dot" id="dot3"></div>
-      <span class="step-label" id="step-label-text">Step 1 of 3</span>
-    </div>
-
-    <div class="page2-header">
-      <h2>Two quick things first</h2>
-      <p>Takes under a minute — then you pick a time.</p>
-    </div>
-
-    <div class="form-step" id="step1-card">
-      <h3>Are you a plumber or electrician based in London?</h3>
-      <p class="step-hint">Easeva is currently only for London-based tradespeople.</p>
-      <div class="qualify-btns">
-        <button class="qualify-btn" id="btn-yes" onclick="handleQualify(true)">✓ Yes, that's me</button>
-        <button class="qualify-btn" id="btn-no" onclick="handleQualify(false)">No, not quite</button>
-      </div>
-      <div class="no-message" id="no-message">
-        <p>We're not quite ready for you yet — but we're expanding soon. Drop your email and we'll let you know first.</p>
-        <div class="email-row">
-          <input type="email" id="notify-email" placeholder="your@email.com">
-          <button class="btn-sm" onclick="submitNotify()">Notify me</button>
-        </div>
-        <p class="notify-confirm" id="notify-confirm">✓ You're on the list. We'll be in touch!</p>
-      </div>
-    </div>
-
-    <div class="form-step locked" id="step2-card">
-      <h3>How would you like your £10 thank-you?</h3>
-      <p class="step-hint">We'll send this right after our call.</p>
-      <div class="voucher-grid">
-        <div class="voucher-card" onclick="selectVoucher(this, 'bank')">
-          <div class="voucher-icon">🏦</div>
-          <div class="voucher-label"><strong>Bank transfer</strong></div>
-          <div class="voucher-check"></div>
-        </div>
-        <div class="voucher-card" onclick="selectVoucher(this, 'costa')">
-          <div class="voucher-icon">☕</div>
-          <div class="voucher-label"><strong>Costa Coffee</strong></div>
-          <div class="voucher-check"></div>
-        </div>
-        <div class="voucher-card" onclick="selectVoucher(this, 'nero')">
-          <div class="voucher-icon">☕</div>
-          <div class="voucher-label"><strong>Caffè Nero</strong></div>
-          <div class="voucher-check"></div>
-        </div>
-        <div class="voucher-card" onclick="selectVoucher(this, 'amazon')">
-          <div class="voucher-icon">🛒</div>
-          <div class="voucher-label"><strong>Amazon voucher</strong></div>
-          <div class="voucher-check"></div>
-        </div>
-        <div class="voucher-card" onclick="selectVoucher(this, 'cash')">
-          <div class="voucher-icon">💷</div>
-          <div class="voucher-label">
-            <strong>Cash</strong>
-            <small>Available in Hampstead, St John's Wood, Kilburn, or Marylebone — please share your prefered location in description of the booking form</small>
+        <form id="waitlistForm">
+          <input type="text" id="waitlistName" placeholder="Your name" aria-label="Your name" required>
+          <div class="phone-field">
+            <select id="waitlistCountryCode" class="country-code" aria-label="Country code">
+              <option value="+44" selected>UK +44</option>
+              <option value="+353">IE +353</option>
+              <option value="+1">US +1</option>
+              <option value="+33">FR +33</option>
+              <option value="+49">DE +49</option>
+              <option value="+34">ES +34</option>
+              <option value="+39">IT +39</option>
+              <option value="+48">PL +48</option>
+              <option value="+91">IN +91</option>
+              <option value="+61">AU +61</option>
+            </select>
+            <input type="tel" id="waitlistPhone" placeholder="7700 900000" aria-label="Phone number" required>
           </div>
-          <div class="voucher-check"></div>
-        </div>
+          <input type="email" id="waitlistEmail" placeholder="Email (optional)" aria-label="Email address (optional)">
+          <div class="device-group" role="radiogroup" aria-label="What phone do you use">
+            <label class="device-option">
+              <input type="radio" name="device" value="ios" required>
+              <span>iPhone (iOS)</span>
+            </label>
+            <label class="device-option">
+              <input type="radio" name="device" value="android" required>
+              <span>Android</span>
+            </label>
+          </div>
+          <button type="submit" class="btn btn-accent">Join the waitlist</button>
+        </form>
+        <p class="wl-fine-print">No spam — just one email when it's your turn</p>
       </div>
-      <button class="btn-next" id="btn-next-voucher" onclick="showCalendly()">Pick a time →</button>
-    </div>
 
-    <div class="calendly-section" id="step3-section">
-      <div class="form-step">
-        <h3>Last step — pick a time that works for you</h3>
-        <p class="step-hint">Your reward gets sent straight after the call.</p>
-        <div class="calendly-embed-wrap">
-          <div class="calendly-inline-widget" data-url="https://calendly.com/zahra-moghadasi/30min" style="min-width:280px;height:700px;"></div>
-        </div>
+      <div class="wl-success" id="successIos">
+        <div class="wl-success-icon">✓</div>
+        <h1>Congratulations</h1>
+        <p>You're among the first 20 — we'll reach out soon</p>
       </div>
-    </div>
 
+      <div class="wl-success" id="successAndroid">
+        <div class="wl-success-icon">✓</div>
+        <h1>You're on the list</h1>
+        <p>We've started with iOS — the Android app is coming soon, stay tuned</p>
+      </div>
+
+    </div>
   </div>
 </div>
 
 <script>
-  function goToPage2() {
-    document.getElementById('page1').classList.remove('active');
-    document.getElementById('page2').classList.add('active');
+  // ---------- View routing (single-page: home / waitlist) ----------
+  function showView(view) {
+    var isWaitlist = view === 'waitlist';
+    document.getElementById('home-view').style.display = isWaitlist ? 'none' : '';
+    document.getElementById('waitlist-view').style.display = isWaitlist ? 'flex' : 'none';
     window.scrollTo(0, 0);
   }
 
-  function goToPage1() {
-    document.getElementById('page2').classList.remove('active');
-    document.getElementById('page1').classList.add('active');
-    window.scrollTo(0, 0);
-  }
-
-  function updateStepIndicator(step) {
-    ['dot1','dot2','dot3'].forEach((id, i) => {
-      document.getElementById(id).classList.toggle('done', i < step);
+  document.querySelectorAll('[data-view]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      var view = this.getAttribute('data-view');
+      showView(view);
+      history.replaceState(null, '', view === 'waitlist' ? '#waitlist' : '#');
     });
-    document.getElementById('step-label-text').textContent = 'Step ' + step + ' of 3';
-  }
+  });
 
-  function handleQualify(isYes) {
-    document.getElementById('btn-yes').classList.toggle('selected', isYes);
-    document.getElementById('btn-no').classList.toggle('selected', !isYes);
-    if (isYes) {
-      document.getElementById('no-message').style.display = 'none';
-      document.getElementById('step2-card').classList.remove('locked');
-      updateStepIndicator(2);
-      setTimeout(() => {
-        document.getElementById('step2-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 150);
+  showView(location.hash === '#waitlist' ? 'waitlist' : 'home');
+
+  // ---------- Waitlist form submission ----------
+  // Paste the Web App URL from your Apps Script deployment here (ends in /exec)
+  var WAITLIST_ENDPOINT = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+  document.getElementById('waitlistForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var device = document.querySelector('input[name="device"]:checked').value;
+    var payload = {
+      name: document.getElementById('waitlistName').value,
+      countryCode: document.getElementById('waitlistCountryCode').value,
+      phone: document.getElementById('waitlistPhone').value,
+      email: document.getElementById('waitlistEmail').value,
+      device: device
+    };
+
+    // mode: 'no-cors' is required for Apps Script web apps called from another
+    // domain (like GitHub Pages) — it means we can't read the response back,
+    // so we can't confirm success or show an error if it fails. This is the
+    // standard trade-off for this approach and works reliably in practice.
+    fetch(WAITLIST_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    }).catch(function (err) {
+      console.error('Waitlist submission failed to send', err);
+    });
+
+    document.getElementById('waitlistCard').classList.add('is-submitted');
+    if (device === 'ios') {
+      document.getElementById('successIos').classList.add('is-active');
     } else {
-      document.getElementById('no-message').style.display = 'block';
-      document.getElementById('step2-card').classList.add('locked');
+      document.getElementById('successAndroid').classList.add('is-active');
     }
-  }
-
-  function selectVoucher(el) {
-    document.querySelectorAll('.voucher-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    document.getElementById('btn-next-voucher').classList.add('visible');
-    updateStepIndicator(3);
-  }
-
-  function showCalendly() {
-    const section = document.getElementById('step3-section');
-    section.classList.add('visible');
-    document.getElementById('btn-next-voucher').style.display = 'none';
-    if (!document.querySelector('script[src*="calendly"]')) {
-      const s = document.createElement('script');
-      s.src = 'https://assets.calendly.com/assets/external/widget.js';
-      s.async = true;
-      document.body.appendChild(s);
-    }
-    setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
-  }
-
-  function submitNotify() {
-    const email = document.getElementById('notify-email').value;
-    if (email && email.includes('@')) {
-      document.getElementById('notify-confirm').style.display = 'block';
-      document.getElementById('notify-email').disabled = true;
-      document.querySelector('#no-message .btn-sm').disabled = true;
-    } else {
-      document.getElementById('notify-email').style.borderColor = '#E24B4A';
-    }
-  }
-
-  updateStepIndicator(1);
+  });
 </script>
+
 </body>
 </html>

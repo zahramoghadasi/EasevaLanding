@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join the waitlist — Easeva</title>
+<meta name="description" content="Be among the first 20 tradespeople to try Easeva free">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #FFFFFF;
+    --navy-900: #0B1B33;
+    --navy-700: #16305C;
+    --navy-500: #2C4A7C;
+    --navy-100: #EEF2F8;
+    --navy-border: #DCE4F0;
+    --accent: #FF6A3D;
+    --accent-ink: #B34521;
+    --font-display: 'Archivo', sans-serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-body);
+    color: var(--navy-900);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 36px);
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+    line-height: 1.15;
+  }
+
+  a { color: inherit; }
+
+  .card {
+    background: var(--white);
+    border: 1.5px solid var(--navy-border);
+    border-radius: 20px;
+    max-width: 460px;
+    width: 100%;
+    padding: 48px 40px 40px;
+    box-shadow: 0 30px 60px -25px rgba(11,27,51,0.25);
+    text-align: center;
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: -44px;
+    left: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy-700);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .back-link:hover { color: var(--navy-900); }
+
+  .card-wrap { position: relative; max-width: 460px; width: 100%; }
+
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    display: inline-block;
+    margin-bottom: 22px;
+  }
+
+  .logo .logo-ease { color: var(--navy-900); }
+  .logo .logo-va { color: var(--accent); }
+
+  .badge {
+    display: inline-block;
+    background: #FFF1EC;
+    color: var(--accent-ink);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+  }
+
+  .sub {
+    color: var(--navy-700);
+    font-size: 15.5px;
+    max-width: 34ch;
+    margin: 0 auto 30px;
+  }
+
+  form { display: flex; flex-direction: column; gap: 12px; }
+
+  input[type="text"],
+  input[type="email"] {
+    width: 100%;
+    padding: 15px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--navy-border);
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--navy-900);
+    background: var(--navy-100);
+  }
+
+  input::placeholder { color: var(--navy-500); }
+
+  .phone-field {
+    display: flex;
+    gap: 8px;
+  }
+
+  .country-code {
+    flex: 0 0 96px;
+    padding: 15px 8px;
+    border-radius: 10px;
+    border: 1.5px solid var(--navy-border);
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    color: var(--navy-900);
+    background: var(--navy-100);
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--navy-500) 50%), linear-gradient(135deg, var(--navy-500) 50%, transparent 50%);
+    background-position: calc(100% - 16px) calc(50% - 2px), calc(100% - 11px) calc(50% - 2px);
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+
+  .phone-field input[type="tel"] {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .device-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 2px;
+  }
+
+  .device-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 10px;
+    border-radius: 10px;
+    border: 1.5px solid var(--navy-border);
+    background: var(--navy-100);
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--navy-700);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+
+  .device-option input[type="radio"] {
+    accent-color: var(--accent);
+    width: 16px;
+    height: 16px;
+  }
+
+  .device-option:has(input:checked) {
+    border-color: var(--accent);
+    background: #FFF1EC;
+    color: var(--accent-ink);
+  }
+
+  input:focus-visible,
+  button:focus-visible,
+  .back-link:focus-visible {
+    outline: 3px solid var(--navy-500);
+    outline-offset: 2px;
+  }
+
+  .btn-accent {
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    padding: 15px 20px;
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15.5px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+    margin-top: 6px;
+  }
+
+  .btn-accent:hover {
+    background: var(--accent-ink);
+    transform: translateY(-1px);
+  }
+
+  .fine-print {
+    margin-top: 18px;
+    font-size: 12.5px;
+    color: var(--navy-500);
+  }
+
+  .success {
+    display: none;
+  }
+
+  .success.is-active { display: block; }
+
+  .success-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--white);
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+  }
+
+  .success h1 { font-size: 24px; }
+
+  .success p {
+    color: var(--navy-700);
+    font-size: 15px;
+    max-width: 32ch;
+    margin: 0 auto;
+  }
+
+  .card.is-submitted .form-state { display: none; }
+  @media (max-width: 380px) {
+    .device-group { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card-wrap">
+  <a href="index.html" class="back-link">&larr; Back to Easeva</a>
+  <div class="card" id="waitlistCard">
+
+    <div class="form-state">
+      <a href="index.html" class="logo"><span class="logo-ease">Ease</span><span class="logo-va">va</span></a>
+      <div class="badge">Only 20 free spots</div>
+      <h1>Join the waitlist</h1>
+      <p class="sub">Be among the first 20 tradespeople to run Easeva free — no card, no commitment</p>
+
+      <form id="waitlistForm">
+        <input type="text" id="waitlistName" placeholder="Your name" aria-label="Your name" required>
+        <div class="phone-field">
+          <select id="waitlistCountryCode" class="country-code" aria-label="Country code">
+            <option value="+44" selected>UK +44</option>
+            <option value="+353">IE +353</option>
+            <option value="+1">US +1</option>
+            <option value="+33">FR +33</option>
+            <option value="+49">DE +49</option>
+            <option value="+34">ES +34</option>
+            <option value="+39">IT +39</option>
+            <option value="+48">PL +48</option>
+            <option value="+91">IN +91</option>
+            <option value="+61">AU +61</option>
+          </select>
+          <input type="tel" id="waitlistPhone" placeholder="7700 900000" aria-label="Phone number" required>
+        </div>
+        <input type="email" id="waitlistEmail" placeholder="Email (optional)" aria-label="Email address (optional)">
+        <div class="device-group" role="radiogroup" aria-label="What phone do you use">
+          <label class="device-option">
+            <input type="radio" name="device" value="ios" required>
+            <span>iPhone (iOS)</span>
+          </label>
+          <label class="device-option">
+            <input type="radio" name="device" value="android" required>
+            <span>Android</span>
+          </label>
+        </div>
+        <button type="submit" class="btn-accent">Join the waitlist</button>
+      </form>
+      <p class="fine-print">No spam — just one email when it's your turn</p>
+    </div>
+
+    <div class="success" id="successIos">
+      <div class="success-icon">✓</div>
+      <h1>Congratulations</h1>
+      <p>You're among the first 20 — we'll reach out soon</p>
+    </div>
+
+    <div class="success" id="successAndroid">
+      <div class="success-icon">✓</div>
+      <h1>You're on the list</h1>
+      <p>We've started with iOS — the Android app is coming soon, stay tuned</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Paste the Web App URL from your Apps Script deployment here (ends in /exec)
+  var WAITLIST_ENDPOINT = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+  document.getElementById('waitlistForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var device = document.querySelector('input[name="device"]:checked').value;
+    var payload = {
+      name: document.getElementById('waitlistName').value,
+      countryCode: document.getElementById('waitlistCountryCode').value,
+      phone: document.getElementById('waitlistPhone').value,
+      email: document.getElementById('waitlistEmail').value,
+      device: device
+    };
+
+    // mode: 'no-cors' is required for Apps Script web apps called from another
+    // domain (like GitHub Pages) — it means we can't read the response back,
+    // so we can't confirm success or show an error if it fails. This is the
+    // standard trade-off for this approach and works reliably in practice.
+    fetch(WAITLIST_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    }).catch(function (err) {
+      console.error('Waitlist submission failed to send', err);
+    });
+
+    document.getElementById('waitlistCard').classList.add('is-submitted');
+    if (device === 'ios') {
+      document.getElementById('successIos').classList.add('is-active');
+    } else {
+      document.getElementById('successAndroid').classList.add('is-active');
+    }
+  });
+</script>
+
+</body>
+</html>
