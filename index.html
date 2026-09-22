@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>easeva — the office manager for tradespeople </title>
+  <title>easeva; trade's office manager </title>
   <meta name="description"
     content="Easeva answers your calls when you're working, handles the forms and certificates, and keeps clients coming back">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -309,8 +309,8 @@
 
     .steps {
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 0 28px;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 56px;
       align-items: start;
     }
 
@@ -341,17 +341,6 @@
       color: var(--navy-700);
       font-size: 16px;
       max-width: 34ch;
-    }
-
-    .step-connector {
-      align-self: center;
-      height: 2px;
-      width: 100%;
-      min-width: 40px;
-      margin-top: 22px;
-      background-image: linear-gradient(to right, var(--navy-500) 50%, transparent 50%);
-      background-size: 10px 2px;
-      background-repeat: repeat-x;
     }
 
     .trust-strip {
@@ -766,12 +755,12 @@
           <div class="hero-sub">
             <p>Easeva answers your calls when you're working, handles the forms and certificates, and keeps clients
               coming back</p>
-            <p>Easeva runs the admin — you run the business</p>
+            <p>Easeva runs the admin, you run the business</p>
           </div>
           <ul class="hero-bullets">
             <li><span class="emoji">📞</span><span>Answers calls when you're away</span></li>
             <li><span class="emoji">📋</span><span>Fills out forms, documents, certificates</span></li>
-            <li><span class="emoji">🤝</span><span>Keeps clients happy — so they stay, and send you more work</span>
+            <li><span class="emoji">🤝</span><span>Keeps clients happy, so they stay, and send you more work</span>
             </li>
           </ul>
           <div class="hero-cta">
@@ -802,17 +791,16 @@
             <h3>A call comes in</h3>
             <p>Easeva picks it up if you're not around, sends you a summary, drafts a reply, puts a quote together</p>
           </div>
-          <div class="step-connector" aria-hidden="true"></div>
           <div class="step">
             <span class="step-index" aria-hidden="true">🧰</span>
             <h3>You go to a job</h3>
-            <p>Just update it over voice, and Easeva handles the rest — follow-ups, chasing, and drafting the forms and
+            <p>Just update it over voice, and Easeva handles the follow-ups, chasing, and drafting the forms and
               certificates from what you've told it</p>
           </div>
         </div>
         <div class="trust-strip">
           <span class="check">✓</span>
-          <p>Nothing goes to a client without your say-so — you approve everything before it's sent</p>
+          <p>You approve everything before it's sent</p>
         </div>
       </div>
     </section>
@@ -889,7 +877,7 @@
               class="logo-va">va</span></a>
           <div class="wl-badge">Only 20 free spots</div>
           <h1>Join the waitlist</h1>
-          <p class="wl-sub">Be among the first 20 tradespeople to run Easeva free — no card, no commitment</p>
+          <p class="wl-sub">Be among the first 20 tradespeople to run Easeva free </p>
 
           <form id="waitlistForm">
             <input type="text" id="waitlistName" placeholder="Your name" aria-label="Your name" required>
@@ -921,19 +909,19 @@
             </div>
             <button type="submit" class="btn btn-accent">Join the waitlist</button>
           </form>
-          <p class="wl-fine-print">No spam — just one email when it's your turn</p>
+          <p class="wl-fine-print">Be the first in the queue</p>
         </div>
 
         <div class="wl-success" id="successIos">
           <div class="wl-success-icon">✓</div>
           <h1>Congratulations</h1>
-          <p>You're among the first 20 — we'll reach out soon</p>
+          <p>You're among the first 20, we'll reach out soon</p>
         </div>
 
         <div class="wl-success" id="successAndroid">
           <div class="wl-success-icon">✓</div>
           <h1>You're on the list</h1>
-          <p>We've started with iOS — the Android app is coming soon, stay tuned</p>
+          <p>We've started with iOS. The Android app is coming soon, stay tuned</p>
         </div>
 
       </div>
