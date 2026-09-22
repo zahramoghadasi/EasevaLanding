@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>easeVA; the office manager for tradespeople </title>
+  <title>easeVA; trade's office manager </title>
   <meta name="description"
     content="Easeva answers your calls when you're working, handles the forms and certificates, and keeps clients coming back">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -269,10 +269,11 @@
       border: none;
       padding: 0;
       display: block;
-      aspect-ratio: auto;
       width: 100%;
-      height: auto;
-      object-fit: contain;
+      height: 100%;
+      aspect-ratio: 9 / 19.5;
+      object-fit: cover;
+      object-position: top;
     }
 
     .hero-frame-inner p {
@@ -344,7 +345,7 @@
     }
 
     .step-connector {
-      align-self: center;
+      align-self: start;   /* anchor to top, then margin-top does the rest */
       height: 2px;
       width: 100%;
       min-width: 40px;
