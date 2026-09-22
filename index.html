@@ -262,6 +262,19 @@
       padding: 24px;
     }
 
+    /* Real screenshot: strip the placeholder box styling, let the image
+       define its own shape instead of fighting the placeholder's aspect-ratio */
+    img.hero-frame-inner {
+      background: none;
+      border: none;
+      padding: 0;
+      display: block;
+      aspect-ratio: auto;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
     .hero-frame-inner p {
       color: var(--navy-700);
       font-weight: 600;
@@ -772,8 +785,7 @@
               <span class="hero-frame-notch"></span>
             </div>
             <!-- PLACEHOLDER: replace this div with <img src="your-ios-screenshot.png" alt="Easeva app preview" style="width:100%;height:100%;object-fit:cover;border-radius:26px;"> -->
-            <img src="Home page.png" alt="Easeva app preview" class="hero-frame-inner"
-              style="width:100%;height:100%;object-fit:cover;">
+            <img src="Home page.png" alt="Easeva app preview" class="hero-frame-inner">
           </div>
         </div>
       </div>
